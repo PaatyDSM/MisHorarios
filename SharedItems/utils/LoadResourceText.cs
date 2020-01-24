@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.IO;
+﻿using System.IO;
+using System.Reflection;
 
 namespace PaatyDSM
 {
@@ -13,15 +13,22 @@ namespace PaatyDSM
         /// </summary>
         public static string ReadReleaseNotes()
         {
-            var assembly = typeof(LoadResource).GetTypeInfo().Assembly;
-            Stream stream = assembly.GetManifestResourceStream("SharedItems.ReleaseNotes.txt");
-
-            string text = "";
-            using (var reader = new StreamReader(stream))
+            try
             {
-                text = reader.ReadToEnd();
+                var assembly = typeof(LoadResource).GetTypeInfo().Assembly;
+                Stream stream = assembly.GetManifestResourceStream("SharedItems.ReleaseNotes.txt");
+
+                string text = "";
+                using (var reader = new StreamReader(stream))
+                {
+                    text = reader.ReadToEnd();
+                }
+                return text;
             }
-            return text;
+            catch
+            {
+                return "";
+            }
         }
     }
 }

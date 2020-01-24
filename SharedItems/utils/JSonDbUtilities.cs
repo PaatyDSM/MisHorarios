@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+
 using Windows.Data.Json;
 
 namespace JSonDbUtilities
@@ -55,7 +56,8 @@ namespace JSonDbUtilities
             return jsonObject.Stringify();
         }
 
-        public string Legajo {
+        public string Legajo
+        {
             get
             {
                 return legajo;
@@ -79,7 +81,6 @@ namespace JSonDbUtilities
         }
 
         public ObservableCollection<WorkDays> Asignaciones { get; }
-
     }
 
     internal class WorkDays
