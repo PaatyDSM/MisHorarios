@@ -2,6 +2,7 @@
 
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -30,36 +31,50 @@ namespace MisHorarios
         /// <param name="e">Información detallada acerca de la solicitud y el proceso de inicio.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
+            /* START:DEBUG SECTION */
+#if DEBUG
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // Debug Options:
+                //this.DebugSettings.EnableFrameRateCounter = false;
+            }
+#endif
+            /* END:DEBUG SECTION */
+
             // No repetir la inicialización de la aplicación si la ventana tiene contenido todavía,
             // solo asegurarse de que la ventana está activa.
             if (!(Window.Current.Content is Frame rootFrame))
             {
                 // Crear un marco para que actúe como contexto de navegación y navegar a la primera página.
-                rootFrame = new Frame();
+                rootFrame = new Frame
+                {
+                    // Establecer el lenguaje predeterminado.
+                    Language = ApplicationLanguages.Languages[0]
+                };
 
+                // Configurar el evento que se lanzará cuando ocurra un error de navegación de página.
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Cargar el estado de la aplicación suspendida previamente
+                    // TO DO: Cargar el estado de la aplicación suspendida previamente
                 }
 
                 // Poner el marco en la ventana actual.
                 Window.Current.Content = rootFrame;
             }
 
-            if (!e.PrelaunchActivated)
+            if (rootFrame.Content == null)
             {
-                if (rootFrame.Content == null)
-                {
-                    // Cuando no se restaura la pila de navegación, navegar a la primera página,
-                    // configurando la nueva página pasándole la información requerida como
-                    //parámetro de navegación
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Asegurarse de que la ventana actual está activa.
-                Window.Current.Activate();
+                // Cuando no se restaura la pila de navegación, navegar a la primera página,
+                // configurando la nueva página pasándole la información requerida como
+                //parámetro de navegación
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
+            // Asegurarse de que la ventana actual está activa.
+            Window.Current.Activate();
         }
 
         /// <summary>
@@ -81,8 +96,8 @@ namespace MisHorarios
         /// <param name="e">Detalles sobre la solicitud de suspensión.</param>
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
+            // TO DO: Guardar el estado de la aplicación y detener toda actividad en segundo plano
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Guardar el estado de la aplicación y detener toda actividad en segundo plano
             deferral.Complete();
         }
     }

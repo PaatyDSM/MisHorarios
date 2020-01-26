@@ -1,8 +1,9 @@
 ﻿using System;
-using Windows.ApplicationModel;
+
+using PaatyDSM.Utils;
+
 using Windows.Foundation;
 using Windows.Storage;
-using Windows.System.Profile;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -34,6 +35,11 @@ namespace MisHorarios
             // in order to call methods that are in this class.
             Current = this;
 
+            // Set global vars specific to the current running project.
+            //SampleTitle.Text = FEATURE_NAME;
+
+            // This are static public properties that allows downstream pages to ge handle to the MainPage instance
+            // in order to get the elements of the UI Xaml and set it's properties.
             main_Grid = Main_Grid;
             frame = Page_Frame;
             footerPanel = FooterPanelV4;
@@ -42,7 +48,8 @@ namespace MisHorarios
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             // Set full-screen on mobile devices and tablets.
-            SetFullScreenModeON(0);
+            PaatyDSM.Utils.
+            Utils.SetFullScreenModeON(0);
 
             // Sets default windows size.
             ApplicationView view = ApplicationView.GetForCurrentView();
@@ -50,63 +57,13 @@ namespace MisHorarios
             view.SetPreferredMinSize(new Size(280, 420));
 
             // Set version number
-            FP_VersionButton.Content = GetAppVersion();
+            FP_VersionButton.Content = PaatyDSM.Utils.GetAppVersion();
+        }
 
+        private void OnPageLoaded(object sender, object e)
+        {
             // Navigate to the WelcomePage
             Page_Frame.Navigate(typeof(WelcomePage), null);
-
-        }
-
-        /// <summary>
-        /// Returns version like v1.5
-        /// </summary>
-        public static string GetAppVersion()
-        {
-            Package package = Package.Current;
-            PackageId packageId = package.Id;
-            PackageVersion version = packageId.Version;
-
-            return string.Format("v{0}.{1}", version.Major, version.Minor);
-        }
-
-        /// <summary>
-        /// Returns current project name
-        /// </summary>
-        public static string GetCurrentProjectName()
-        {
-            Package package = Package.Current;
-            return package.DisplayName;
-        }
-
-        /// <summary>
-        /// Launch UWP apps in full-screen mode on mobile devices and tablets, desktop or both.
-        /// </summary>
-        /// <param name="device">0 for Mobile and Tablets, 1 for PC and 2 for both platforms</param>
-        private void SetFullScreenModeON(int device)
-        {
-            string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
-
-            if (device == 0)
-            {
-                if (platformFamily == "Windows.Mobile")
-                {
-                    ApplicationView view = ApplicationView.GetForCurrentView();
-                    view.TryEnterFullScreenMode();
-                }
-            }
-            else if (device == 1)
-            {
-                if (platformFamily == "Windows.Desktop")
-                {
-                    ApplicationView view = ApplicationView.GetForCurrentView();
-                    view.TryEnterFullScreenMode();
-                }
-            }
-            else if (device == 2)
-            {
-                ApplicationView view = ApplicationView.GetForCurrentView();
-                view.TryEnterFullScreenMode();
-            }
         }
 
         /// <summary>
@@ -153,13 +110,6 @@ namespace MisHorarios
             DebugMessage
         };
 
-        // On click 'Hyper-links'
-        private async void Footer_Click(object sender, object e)
-        {
-            //123123123
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
-        }
-
         // Start _MainPage_to_ReleaseNotes_FadeOut animation.
         private void Click_MainPage_to_ReleaseNotes_FadeOut(object sender, RoutedEventArgs e)
         {
@@ -174,6 +124,5 @@ namespace MisHorarios
 
             Page_Frame.Navigate(typeof(ReleaseNotesPage), null);
         }
-
     }
 }

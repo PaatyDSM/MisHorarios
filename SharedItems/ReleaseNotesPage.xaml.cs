@@ -1,12 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 using PaatyDSM;
 
 using Windows.System.Profile;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml;
 
 using static MisHorarios.MainPage;
 
@@ -67,8 +69,6 @@ namespace MisHorarios
 
         private async void LoadReleaseNotes(object sender, object e)
         {
-            Notes.Text = "";
-
             // Run in separate thread to not block the GUI while releaseNotes text is loading.
             await LoadReleaseNotesAsync().ConfigureAwait(false);
 
@@ -80,10 +80,11 @@ namespace MisHorarios
             await Task.Run(() =>
             {
                 // Load ReleaseNotes file
-                //LoadResource.ReadReleaseNotes();
+                Notes.Text = LoadResource.ReadReleaseNotes();
 
                 // Stop ProgressRing
                 //loading_ring.IsActive = false;
+
             }).ConfigureAwait(false);
         }
     }
