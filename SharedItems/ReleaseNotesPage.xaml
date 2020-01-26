@@ -1,34 +1,30 @@
 ﻿<Page x:Class="MisHorarios.ReleaseNotesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="Black">
+      Loaded="OnPageLoaded">
 
+	<!--  Animations  -->
 	<Page.Resources>
-		<Style x:Name="HorariosListViewStyle" TargetType="ListViewItem">
-			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
-			<Setter Property="Margin" Value="0" />
-		</Style>
-		<!--  Storyboard resource: ReleaseNotesPage FadeIn.  -->
-		<Storyboard x:Name="ReleaseNotes_FadeInAnimation">
+		<!--  Storyboard resource: Page_Frame FadeOut  -->
+		<Storyboard x:Name="ReleaseNotes_FadeIn">
 			<DoubleAnimation Completed="LoadReleaseNotes"
-			                 Storyboard.TargetName="Page"
+			                 Storyboard.TargetName="ReleaseNotes_Grid"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="0.0"
 			                 To="1.0"
-			                 Duration="0:0:0.25">
+			                 Duration="0:0:1.5">
 				<DoubleAnimation.EasingFunction>
-					<QuinticEase EasingMode="EaseIn" />
+					<QuinticEase />
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
-		<!--  Storyboard resource: ReleaseNotesPage FadeOut.  -->
-		<Storyboard x:Name="ReleaseNotes_FadeOutAnimation">
-			<DoubleAnimation Completed="Backbutton1"
-			                 Storyboard.TargetName="Page"
+		<Storyboard x:Name="ReleaseNotes_to_MainPage_FadeOut">
+			<DoubleAnimation Completed="BackToMainPage"
+			                 Storyboard.TargetName="ReleaseNotes_Grid"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="1.0"
 			                 To="0.0"
-			                 Duration="0:0:0.25">
+			                 Duration="0:0:0.6">
 				<DoubleAnimation.EasingFunction>
 					<QuinticEase />
 				</DoubleAnimation.EasingFunction>
@@ -36,17 +32,12 @@
 		</Storyboard>
 	</Page.Resources>
 
-	<!--  Page  -->
-	<Grid x:Name="Page"
-	      Loaded="Start_FadeInAnimation"
-	      Opacity="0">
-
+	<Grid x:Name="ReleaseNotes_Grid" Opacity="0">
 		<!--  BackgroundImage  -->
 		<Grid.Background>
 			<ImageBrush ImageSource="imgs/Welcome_background.png" Stretch="UniformToFill" />
 		</Grid.Background>
 
-		<!--  RowDefinitions  -->
 		<Grid.RowDefinitions>
 			<!--  Grid:Title  -->
 			<RowDefinition Height="Auto" />
@@ -56,14 +47,13 @@
 
 		<Button x:Name="BackButtonPC"
 		        HorizontalAlignment="Left"
-		        Click="Backbutton1"
+		        Click="BackButton"
 		        Foreground="#FF0099FF"
 		        Opacity="1"
 		        Style="{StaticResource NavigationBackButtonNormalStyle}" />
 
 		<!--  Title  -->
-		<Grid x:Name="TopPanel"
-		      MaxWidth="360"
+		<Grid MaxWidth="360"
 		      Margin="24,12"
 		      VerticalAlignment="Top">
 
@@ -106,18 +96,14 @@
 		<Grid x:Name="ContentPanel"
 		      Grid.Row="1"
 		      Background="#B0211200">
-			<!--  ProgressRing_animation  -->
-			<ProgressRing x:Name="loading_ring"
-			              Width="180"
-			              Height="180"
-			              Foreground="#FF21804B"
-			              IsActive="True" />
+
 			<ScrollViewer Height="Auto"
 			              Margin="6,12"
 			              Background="Transparent"
 			              Foreground="Transparent"
 			              VerticalScrollBarVisibility="Auto"
 			              VerticalScrollMode="Auto">
+
 				<!--  Release notes Box  -->
 				<TextBox x:Name="Notes"
 				         Background="#56FFFFFF"
@@ -133,6 +119,14 @@
 				         TextAlignment="Center"
 				         TextWrapping="Wrap" />
 			</ScrollViewer>
+
+			<!--  ProgressRing_animation  -->
+			<ProgressRing x:Name="loading_ring"
+			              Width="180"
+			              Height="180"
+			              Foreground="#FF21804B"
+			              IsActive="True" />
+
 		</Grid>
 	</Grid>
 </Page>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using PaatyDSM;
 
@@ -7,6 +6,7 @@ using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml;
 
 using static MisHorarios.MainPage;
 
@@ -14,24 +14,9 @@ namespace MisHorarios
 {
     public sealed partial class ReleaseNotesPage : Page
     {
-        // A pointer back to the main page.  This is needed if you want to call methods in MainPage
-        private readonly MainPage rootPage = Current;
-
         public ReleaseNotesPage()
         {
             InitializeComponent();
-        }
-
-        // Function start_fade-in_animation
-        private void Start_FadeInAnimation(object sender, object e)
-        {
-            ReleaseNotes_FadeInAnimation.Begin();
-        }
-
-        // Function start_fade-out_animation
-        private void Start_FadeOutAnimation(object sender, object e)
-        {
-            ReleaseNotes_FadeOutAnimation.Begin();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -41,22 +26,13 @@ namespace MisHorarios
 
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
-
-            // Restore Page_Frame Opacity
-            rootPage.RestorePage_FrameOpacity();
         }
 
-        // Se invoca cuando se presionan los botones de retroceso de hardware o software.
-        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        private void OnPageLoaded(object sender, object e)
         {
-            e.Handled = true;
-            Backbutton1(sender, null);
-        }
-
-        // Navigation: Back Button
-        private void Backbutton1(object sender, object e)
-        {
-            Frame.Navigate(typeof(WelcomePage));
+            main_Grid.Opacity = 1;
+            footerPanel.Visibility = Visibility.Collapsed;
+            ReleaseNotes_FadeIn.Begin();
         }
 
         // Set Back Button on Desktop devices
@@ -68,6 +44,25 @@ namespace MisHorarios
             {
                 BackButtonPC.Opacity = 0;
             }
+        }
+
+        // Se invoca cuando se presionan los botones de retroceso de hardware o software.
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = true;
+            ReleaseNotes_to_MainPage_FadeOut.Begin();
+        }
+
+        // Navigation: Back Button
+        private void BackButton(object sender, object e)
+        {
+            ReleaseNotes_to_MainPage_FadeOut.Begin();
+        }
+
+        // Navigation: Back Button
+        private void BackToMainPage(object sender, object e)
+        {
+            MainPage.frame.Navigate(typeof(WelcomePage));
         }
 
         private async void LoadReleaseNotes(object sender, object e)
@@ -85,7 +80,7 @@ namespace MisHorarios
             await Task.Run(() =>
             {
                 // Load ReleaseNotes file
-                LoadResource.ReadReleaseNotes();
+                //LoadResource.ReadReleaseNotes();
 
                 // Stop ProgressRing
                 //loading_ring.IsActive = false;

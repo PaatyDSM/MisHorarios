@@ -1,17 +1,18 @@
 ﻿<Page x:Class="MisHorarios.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="LightGray">
 
 	<!--  Animations  -->
 	<Page.Resources>
-		<!--  Storyboard resource: Page_Frame FadeOut.  -->
-		<Storyboard x:Name="Page_Frame_ReleaseNotesFadeOutAnimation">
-			<DoubleAnimation Completed="Release_Notes_Click"
-			                 Storyboard.TargetName="PageFrameGrid"
+		<!--  Storyboard resource: Page_Frame FadeOut  -->
+		<Storyboard x:Name="MainPage_to_ReleaseNotes_FadeOut">
+			<DoubleAnimation Completed="MainPage_to_ReleaseNotes_FadeOut_Completed"
+			                 Storyboard.TargetName="Main_Grid"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="1.0"
 			                 To="0.0"
-			                 Duration="0:0:0.5">
+			                 Duration="0:0:0.6">
 				<DoubleAnimation.EasingFunction>
 					<QuinticEase />
 				</DoubleAnimation.EasingFunction>
@@ -19,20 +20,18 @@
 		</Storyboard>
 	</Page.Resources>
 
-	<Grid Background="Black">
+	<Grid x:Name="Main_Grid">
 		<Grid.RowDefinitions>
 			<!--  Page_Frame  -->
 			<RowDefinition Height="*" />
 			<!--  StatusBlock  -->
 			<RowDefinition Height="Auto" />
 			<!--  FooterPanelV4  -->
-			<RowDefinition Height="37" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<!--  Aquí son cargadas todas las páginas del programa  -->
-		<Grid x:Name="PageFrameGrid">
-			<Frame x:Name="Page_Frame" />
-		</Grid>
+		<Frame x:Name="Page_Frame" />
 
 		<!--  Bloque para mensajes de estado y de error  -->
 		<Border x:Name="StatusBorder"
@@ -73,12 +72,16 @@
 			        FontFamily="Segoe MDL2 Assets"
 			        FontSize="14"
 			        Foreground="Black"
-			        ToolTipService.ToolTip="Configuraciones">
+			        ToolTipService.ToolTip="Opciones">
 				<Button.Flyout>
 					<MenuFlyout>
-						<MenuFlyoutItem Text="Reportar problema/sugerencia" />
+						<MenuFlyoutItem Click="Footer_Click"
+						                Tag="mailto:paaty.dsm@gmail.com?subject="
+						                Text="Reportar problema/sugerencia" />
 						<MenuFlyoutSeparator />
-						<ToggleMenuFlyoutItem Text="Política de privacidad" />
+						<MenuFlyoutItem Click="Footer_Click"
+						                Tag="http://paatydsmapps.000webhostapp.com/"
+						                Text="Política de privacidad" />
 					</MenuFlyout>
 				</Button.Flyout>
 			</Button>
@@ -90,7 +93,7 @@
 			                 Content="PaatyDSM Apps"
 			                 FontFamily="Segoe Script"
 			                 FontSize="20"
-			                 Tag="https://www.instagram.com/paatydsm/"
+			                 Tag="http://paatydsmapps.000webhostapp.com/"
 			                 ToolTipService.ToolTip="Visitarme" />
 
 			<!--  Version  -->
@@ -100,7 +103,7 @@
 			        VerticalAlignment="Center"
 			        Background="Transparent"
 			        BorderBrush="Transparent"
-			        Click="Start_ReleaseNotesFadeOutAnimation"
+			        Click="Click_MainPage_to_ReleaseNotes_FadeOut"
 			        Content="vN.NN"
 			        FontFamily="Consolas"
 			        FontSize="14"
@@ -109,4 +112,5 @@
 			        ToolTipService.ToolTip="Historial de cambios" />
 		</Grid>
 	</Grid>
+
 </Page>

@@ -3,7 +3,6 @@ using Windows.ApplicationModel;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.System.Profile;
-//using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,8 +13,14 @@ namespace MisHorarios
 {
     public sealed partial class MainPage : Page
     {
-        // Referencia al Frame en el cual todas las páginas son cargadas.
+        // Referencia a MainPage
         public static MainPage Current;
+        // Referencia al Frame en el cual todas las páginas son cargadas.
+        public static Frame frame;
+        // Referencia al Grid principal (para controlar efectos de animación).
+        public static Grid main_Grid;
+        // Referencia al FooterPanelV4.
+        public static Grid footerPanel;
 
         // Path for local saving
         public static readonly string localfolder = ApplicationData.Current.LocalFolder.Path;
@@ -28,6 +33,10 @@ namespace MisHorarios
             // This is a static public property that allows downstream pages to get a handle to the MainPage instance
             // in order to call methods that are in this class.
             Current = this;
+
+            main_Grid = Main_Grid;
+            frame = Page_Frame;
+            footerPanel = FooterPanelV4;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -40,11 +49,12 @@ namespace MisHorarios
             view.TryResizeView(new Size(360, 576));
             view.SetPreferredMinSize(new Size(280, 420));
 
+            // Set version number
+            FP_VersionButton.Content = GetAppVersion();
+
             // Navigate to the WelcomePage
             Page_Frame.Navigate(typeof(WelcomePage), null);
 
-            // Set version number
-            FP_VersionButton.Content = GetAppVersion();
         }
 
         /// <summary>
@@ -125,7 +135,7 @@ namespace MisHorarios
             // Collapse the StatusBlock if it has no text to conserve real estate.
             if (!string.IsNullOrEmpty(StatusBlock.Text))
             {
-                StatusBorder.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                StatusBorder.Visibility = Visibility.Visible;
             }
             else
             {
@@ -143,21 +153,6 @@ namespace MisHorarios
             DebugMessage
         };
 
-        private void Start_ReleaseNotesFadeOutAnimation(object sender, RoutedEventArgs e)
-        {
-            //TransitionColorFix1.Background = ref new SolidColorBrush(Colors.Black);
-            Page_Frame_ReleaseNotesFadeOutAnimation.Begin();
-        }
-
-        // On click 'Version number' navigate to 'Release Notes Page'
-        private void Release_Notes_Click(object sender, object e)
-        {
-            // Clean error messages from previous page
-            NotifyUser("", NotifyType.StatusMessage);
-
-            Frame.Navigate(typeof(ReleaseNotesPage));
-        }
-
         // On click 'Hyper-links'
         private async void Footer_Click(object sender, object e)
         {
@@ -165,9 +160,20 @@ namespace MisHorarios
             await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
         }
 
-        public void RestorePage_FrameOpacity()
+        // Start _MainPage_to_ReleaseNotes_FadeOut animation.
+        private void Click_MainPage_to_ReleaseNotes_FadeOut(object sender, RoutedEventArgs e)
         {
-            Page_Frame.Opacity = 1;
+            MainPage_to_ReleaseNotes_FadeOut.Begin();
         }
+
+        // When Click_MainPage_to_ReleaseNotes_FadeOut animation is completed, navigate to 'Release Notes' Page.
+        private void MainPage_to_ReleaseNotes_FadeOut_Completed(object sender, object e)
+        {
+            // Clean error messages from previous page
+            NotifyUser("", NotifyType.StatusMessage);
+
+            Page_Frame.Navigate(typeof(ReleaseNotesPage), null);
+        }
+
     }
 }

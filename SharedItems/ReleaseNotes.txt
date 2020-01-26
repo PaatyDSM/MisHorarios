@@ -1,18 +1,19 @@
-﻿V1.61\n
+﻿V1.62\n
 *We merged BK and SBX solution in one.\n
 *Rewritten and improved all code.\n
 *Translated to C# .Net 4.5.1.\n
 *Fixed various bugs.\n
-*Updated FooterPanel to V4 to pass Store certification.\n
-\t - *Now in Settings we include a privacy link.\n
+*Updated FooterPanel to V4.\n
+\t - *Now in Settings we include a privacy link to pass Store certification.\n
 *Fixed typos in ReleaseNotes.\n
 *Translation improvements.\n
 *Now loading ReleaseNotes text don't block the GUI.\n
 *Fixed loading animation.\n
 "*Changed default windows size and minimum resize.\n"
-"*Added support to ARM64.\n"
+"x Added support to ARM64.\n"
 "*Improved colors design.\n"
-"*Added Fluent effects.\n"
+"*Improved animations.\n"
+"x Added Fluent effects.\n"
 "*Fix design in HorariosPage.\n"
 \n
 ------------------\n

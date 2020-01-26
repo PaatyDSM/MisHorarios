@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HttpClientSample;
 
 using JSonDbUtilities;
-
+using Windows.Security.Cryptography.Certificates;
 using Windows.Storage;
 using Windows.System.Profile;
 using Windows.UI.Core;
@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
-
+using Windows.Web.Http.Headers;
 using static MisHorarios.MainPage;
 
 namespace MisHorarios
@@ -26,14 +26,13 @@ namespace MisHorarios
         // as NotifyUser()
         private readonly MainPage rootPage = Current;
 
-        // Path for local saving
-        public readonly string localfolder = ApplicationData.Current.LocalFolder.Path;
-
         // We are now creating a HttpClient in the constructor and then storing it as a field so that we can reuse it.
-        private HttpClient httpClient;
-
         private HttpBaseProtocolFilter filter;
+        private HttpClient httpClient;
         private CancellationTokenSource cts;
+
+        //
+        private string OutputText = string.Empty;
 
         // Function start_fade-in_animation
         private void Start_FadeInAnimation()
@@ -44,29 +43,120 @@ namespace MisHorarios
         // OnNavigatedTo function
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Set Back Button on Desktop devices
+            // Un-hide Back Button on Desktop devices.
             SetBackButton();
 
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-            // CacheControl
+            // Create an HttpClient instance with custom cache settings and a CancellationToken.
             filter = new HttpBaseProtocolFilter();
-            filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-
-            // Initialize HTTP client
             httpClient = new HttpClient(filter);
             cts = new CancellationTokenSource();
 
-            // Create URL with 'legajo' string
-            string url = "http://proveedores.alsea.com.ar:25080/asignaciones-server/mobile/main/asignaciones/legajos/" + e.Parameter.ToString();
+            // Create URL with 'legajo' string.
+            string URL = "http://proveedores.alsea.com.ar:25080/asignaciones-server/mobile/main/asignaciones/legajos/" + e.Parameter.ToString();
 
-            // Save last used legajo
+            // Save last used legajo.
             Save_last_legajo(e.Parameter.ToString());
 
-            // Start Connection async
-            await Task.Factory.StartNew(async () => await StartConnectionAsync(url, e.Parameter.ToString(), 0).ConfigureAwait(false), CancellationToken.None, TaskCreationOptions.DenyChildAttach | TaskCreationOptions.HideScheduler, TaskScheduler.Default).ConfigureAwait(false);
+            // Start Connection Async.
+            await StartConnectionAsync(URL, e.Parameter.ToString(), 0).ConfigureAwait(false);
+        }
+
+        // Start Connection Async
+        private async Task StartConnectionAsync(string URL, string legajo, int retry)
+        {
+            // Show Message.
+            rootPage.NotifyUser("Consultando horarios...", NotifyType.StatusMessage);
+
+            // Do an asynchronous GET.
+            try
+            {
+                // Create a new httpClient.
+                //httpClient?.Dispose();
+                // Cache control.
+                filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+                filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+                // Ignore SSL errors.
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+                // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
+                // Default headers will be sent with every request sent from this HttpClient instance.
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
+
+                // Connect to server and get text.
+                HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask(cts.Token).ConfigureAwait(false);
+
+                string responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
+
+                // Save received text to a variable
+                OutputText = responseBodyAsText.Replace("<br>", Environment.NewLine);
+
+                // Find ':[{' string to check if the data contains a valid legajo info
+                if (OutputText.Contains(":[{"))
+                {
+                    try
+                    {
+                        // Parse JSON
+                        DataContext = new User(OutputText);
+
+                        // Show successful
+                        rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage);
+
+                        // Save cache
+                        Save_cache(OutputText, legajo);
+
+                        // Show ContentPanelInfo
+                        ContentPanelInfo.Visibility = Visibility.Visible;
+
+                        // Show list
+                        List.Visibility = Visibility.Visible;
+                    }
+                    catch (Exception)
+                    {
+                        //123123123
+                        // Database parsing error
+                        rootPage.NotifyUser("Conexión a Internet muy débil.\nReintentando...", NotifyType.ErrorMessage);
+                        if (retry == 0)
+                        {
+                            await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage);
+
+                            // Try to read from cache
+                            Read_cache(legajo, 1);
+                        }
+                    }
+                }
+                else
+                {
+                    // Legajo NOT FOUND error
+                    rootPage.NotifyUser("Legajo inexistente o sin horarios asignados.", NotifyType.ErrorMessage);
+                    GoPageBack(null, null);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                rootPage.NotifyUser("Conexión cancelada", NotifyType.DebugMessage);
+            }
+            catch (Exception)
+            {
+                // If no Internet connection is available, check if the last legajo obtained is equal to
+                // the actual legajo and read it from the cache and show a message.
+
+                rootPage.NotifyUser("Error. No hay conexión a Internet.", NotifyType.ErrorMessage);
+
+                // Try to read from cache
+                Read_cache(legajo, 0);
+            }
+            finally
+            {
+                // Stop ProgressRing
+                loading_ring.IsActive = false;
+            }
         }
 
         // Se invoca cuando se presionan los botones de retroceso de hardware o software.
@@ -129,8 +219,8 @@ namespace MisHorarios
             // Cancel current HTTP connection
             CancelHttpTask();
 
-            HiddenOutputField.Text = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
-            DataContext = new User(HiddenOutputField.Text);
+            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+            DataContext = new User(OutputText);
 
             // Go to page
             Frame.Navigate(typeof(WelcomePage));
@@ -143,9 +233,9 @@ namespace MisHorarios
             CancelHttpTask();
 
             // Clear List of Horarios
-            HiddenOutputField.Text = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
 
-            DataContext = new User(HiddenOutputField.Text);
+            DataContext = new User(OutputText);
 
             // Clear StatusBlock
             rootPage.NotifyUser("", NotifyType.StatusMessage);
@@ -160,9 +250,9 @@ namespace MisHorarios
             CancelHttpTask();
 
             // Clear List of Horarios
-            HiddenOutputField.Text = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
 
-            DataContext = new User(HiddenOutputField.Text);
+            DataContext = new User(OutputText);
 
             // Clear StatusBlock
             rootPage.NotifyUser("", NotifyType.StatusMessage);
@@ -185,97 +275,23 @@ namespace MisHorarios
             writer.Dispose();
         }
 
-        // Start Connection Async
-        private async Task StartConnectionAsync(string URL, string legajo, int retry)
-        {
-            // Show Message
-            rootPage.NotifyUser("Consultando horarios...", NotifyType.StatusMessage);
-
-            // Do an asynchronous GET.
-            try
-            {
-                HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask().ConfigureAwait(false);
-
-                await Helpers.DisplayTextResultAsync(response, HiddenOutputField, cts.Token).ConfigureAwait(false);
-
-                // Find ':[{' string to check if the data contains a valid legajo info
-                if (HiddenOutputField.Text.Contains(":[{"))
-                {
-                    try
-                    {
-                        // Parse JSON
-                        DataContext = new User(HiddenOutputField.Text);
-
-                        // Show successful
-                        rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage);
-
-                        // Save cache
-                        Save_cache(HiddenOutputField.Text, legajo);
-
-                        // Show ContentPanelInfo
-                        ContentPanelInfo.Visibility = Visibility.Visible;
-
-                        // Show list
-                        List.Visibility = Visibility.Visible;
-                    }
-                    catch (Exception)
-                    {
-                        //123123123
-                        // Database parsing error
-                        rootPage.NotifyUser("Conexión a Internet muy débil.\nReintentando...", NotifyType.ErrorMessage);
-                        if (retry == 0)
-                        {
-                            await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage);
-
-                            // Try to read from cache
-                            Read_cache(legajo, 1);
-                        }
-                    }
-                }
-                else
-                {
-                    // Legajo NOT FOUND error
-                    rootPage.NotifyUser("Legajo inexistente o sin horarios asignados.", NotifyType.ErrorMessage);
-                    GoPageBack(null, null);
-                }
-            }
-            catch (TaskCanceledException)
-            {
-                rootPage.NotifyUser("Conexión cancelada", NotifyType.DebugMessage);
-            }
-            catch (Exception)
-            {
-                // If no Internet connection is available, check if the last legajo obtained is equal to
-                // the actual legajo and read it from the cache and show a message.
-
-                rootPage.NotifyUser("Error. No hay conexión a Internet.", NotifyType.ErrorMessage);
-
-                // Try to read from cache
-                Read_cache(legajo, 0);
-            }
-            finally
-            {
-                // Stop ProgressRing
-                loading_ring.IsActive = false;
-            }
-        }
-
         // Read from cache
         private void Read_cache(string legajo, int database_error)
         {
             // Read file
             string data = "";
 
-            var reader = new StreamReader(File.OpenRead(localfolder + "\\hoariosLast" + legajo + ".tmp"));
-            while (!reader.EndOfStream)
+            try
             {
-                // Put legajo into TextBox
-                data = reader.ReadLine();
+                var reader = new StreamReader(File.OpenRead(localfolder + "\\hoariosLast" + legajo + ".tmp"));
+                while (!reader.EndOfStream)
+                {
+                    // Put legajo into TextBox
+                    data = reader.ReadLine();
+                }
+                reader.Dispose();
             }
+            catch { }
 
             // legajo item format
             string query = "\"legajo\":\"" + legajo + "\"}";

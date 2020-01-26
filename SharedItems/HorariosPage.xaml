@@ -71,9 +71,6 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<!--  HiddenOutputField  -->
-		<TextBox x:Name="HiddenOutputField" Visibility="Collapsed" />
-
 		<Button x:Name="BackButtonPC"
 		        HorizontalAlignment="Left"
 		        Click="BackButton"

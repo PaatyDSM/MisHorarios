@@ -3,7 +3,7 @@ using System.IO;
 
 using PaatyDSM;
 
-//using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -13,7 +13,7 @@ namespace MisHorarios
 {
     public sealed partial class WelcomePage : Page
     {
-        // A pointer back to the main page.  This is needed if you want to call methods in MainPage
+        // A pointer back to the main page. This is needed if you want to call methods in MainPage
         private readonly MainPage rootPage = Current;
 
         public WelcomePage()
@@ -45,6 +45,8 @@ namespace MisHorarios
             {
                 APP_TITLE.Text = GetCurrentProjectName();
             }
+
+            footerPanel.Visibility = Visibility.Visible;
 
             // Read last used legajo
             Read_legajo();
