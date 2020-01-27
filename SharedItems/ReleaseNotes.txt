@@ -1,391 +1,389 @@
-﻿V1.62\n
-*We merged BK and SBX solution in one.\n
-*Rewritten and improved all code.\n
-*Translated to C# .Net 4.5.1.\n
-*Fixed various bugs.\n
-*Updated FooterPanel to V4.\n
-\t - *Now in Settings we include a privacy link to pass Store certification.\n
-*Fixed typos in ReleaseNotes.\n
-*Translation improvements.\n
-*Now loading ReleaseNotes text don't block the GUI.\n
-*Fixed loading animation.\n
-"*Changed default windows size and minimum resize.\n"
-"x Added support to ARM64.\n"
-"*Improved colors design.\n"
-"*Improved animations.\n"
-"x Added Fluent effects.\n"
-"*Fix design in HorariosPage.\n"
-\n
-------------------\n
-V1.47\n
-*Fixed crash in MainPage.\n
-*Cache multiple legajos.\n
-*Improved code.\n
-*Removed unused code.\n
-*Fixed bug#090.\n
-*Updated language to Spanish-Argentina.\n
-*Minor translations fixes.\n
-*GUI fixes in WelcomePage.\n
-*GUI fixes in HorariosPage.\n
-*GUI fixes in StatusMessage.\n
-*Changed minimum required Windows version to 10.0.10586.\n
-*Fixed BadgeLogo assets for certification.\n
-*Update Web-page URL.\n
-*Updated certificates.\n
-*Updated project to VS2019.\n
-\n
-------------------\n
-V1.33\n
-*Fixed navigation back.\n
-*Fixed tool-bar.\n
-*A lot of improvements.\n
-\n
-------------------\n
-V1.26\n
-*Now can be installed on the SD card.\n
-*Better performance.\n
-*Fixed images.\n
-*Added keyboard navigation.\n
-*Changes and improvements on the readability of Horarios Page.\n
-*Minor changes and fixes.\n
-*Reduced app size.\n
-*Fixed navigation on Desktop version.\n
-*Updated texts.\n
-*Fixed bugs.\n
-*Added update notification.\n
-*Retry on Internet error connection.\n
-*UI changes and improvements.\n
-\n
-------------------\n
-V1.25\n
-*Fixed navigation.\n
-*Updated texts.\n
-*Fixed bugs.\n
-\n
-------------------\n
-V1.2\n
-*Fixed icons.\n
-\n
-------------------\n
-V1.19\n
-*New and improved design.\n
-*Fixed a lot of bugs.\n."
-*Speed improvements.\n
-*Animations improvements.\n
-*Removed expiration time.\n
-*Network connection improvement.\n
-*Fixed some translations.\n
-*Added missing error messages.\n
-*New BackButtonPressed handler.\n
-\n
-------------------\n
-V1.18\n
-*Minor GUI and code corrections.\n
-*Added update text.\n
-*Added x64 platform.\n
-*Expiration for Windows 10 devices.\n
-\n
-------------------\n
-V1.17\n
-*Updated WebSite.\n
-*Now all Windows 10 versions from 10.0.10240 are supported.\n
-*Minor Fixes.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V1.16\n
-*Fixed Can't exit from app in Welcome Page pressing Hardware Back Button.(bug#070).\n
-*Preventively blocked 'turned views' on mobile devices causing GUI glitches.\n
-*Fixed text alignment in Release Notes Page.\n
-*Minor source code fixes.\n
-*Updated Manifests.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V1.15\n
-*Fixed grid in Horarios Page on landscape mode.\n
-*Fixed elements in Welcome Page on landscape mode.\n
-*Minor GUI fixes.\n
-*Fixed transitions.\n
-*Changed some translations.\n
-*Fixed corruption in portrait mode.\n
-*Added loading animation on HorariosPage.\n
-*Fixed Grid transparencies.\n
-*Fixed 3D title effect on Horarios Page.\n
-*Now 'Legajo' and 'Fecha de consulta' are hidden until page is loaded.\n
-*Alerts if the content is readed from cache.\n
-\n
-Know Bugs :\n
-*Can't exit from app in Welcome Page pressing Hardware Back Button.\n
-\n
-------------------\n
-V1.1\n
-*Fixed a bug that causes a crash on desktop devices.\n
-*Changes and fixes in WelcomePage GUI.\n
-*Fixed some translations.\n
-*Fixed size elements on desktop devices.\n
-*Fixed FooterPanel in all pages.\n
-*Changed all titles to new 3d look.\n
-*Changed all old buttons to new look 3D buttons in all pages.\n
-*New and redesigned ReleaseNotesPage.\n
-*Added animations and transitions.\n
-*New look at HorariosPage.\n
-*Fix auto scale in all pages.\n
-*Fixed items in HorariosPage they are not selectable.\n
-*Changed filenames and project name.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V1.02\n
-*New and redesigned MainPage.\n
-*Now pages are centered correctly in landscape mode.\n
-*Revised and fixed translations.\n
-*Revised source code.\n
-\t - *A lot of changes and minor fixes.\n
-*Deleted unused code and files.\n
-*Fixed some wrong error messages text.\n
-*Updated certificates.\n
-*Fixed a random bug related to SuspensionManager.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V1.01\n
-*Fixes in App.xaml.\n
-*Fixed some translations in source code.\n
-*Fixed bad version in Windows Store.\n
-*Deleted unused code.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V1.00 (Final release)\n
-*Added cache off-line read for no Internet connection.\n
-*Save my last used legajo.\n
-*Deleted unused files.\n
-*Changes in source code.\n
-\t - Deleted unused code.\n
-\t - Optimized functions.\n
-\t - Better comments.\n
-*Fixed error handler for no Internet connection.\n
-*Minor fixes on some texts.\n
-*Updated manifest.\n
-*Speed and memory improvement.\n
-*Changed problematic functions.\n
-*Fixed after suspension, can't go back from Horarios Page pressing Hardware Back Button.(bug#022\n
-*Better suspension Manager.\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V0.91rc\n
-*Minor changes in source code\n
-*Store App Certification for Windows 10\n
-\n
-Know Bugs :\n
-*After suspension, can't go back from Horarios Page pressing Hardware Back Button.\n
-\n
-------------------\n
-V0.9rp\n
-*Revised code.\n
-*Fixed minor bug in Main Page.\n
-*Removed unused code and reduced app size.\n
-*Changed some font sizes.\n
-*Fixed an uppercase in titles.\n
-*Fixed horarios don't clean up when navigating back.(#bug013).\n
-*Fixed can't exit from app.\n
-*Fixed Hardware Back Button bugs.(bug#012), (bug#014).\n
-*Fixed Error messages bugs.(bug#016).\n
-*Fixed when Hardware Back Button is pressed, the app stop working correctly.(bug#012).\n
-*Fixed if a legajo is not encountered in database it won't show an error.\n
-*Fixed translations.\n
-*Fixed random crash occurs when restoring from suspension.\n
-*Fixed Horarios Page are not working after pressing Hardware Back button.\n
-*Fixed navigation bug that occurs under certain conditions.(bug#021).\n
-\n
-Know Bugs :\n
-\n
-------------------\n
-V0.87b\n
-*Added better handler for no Internet connection.\n
-*A lot of changes in the source code.\n
-*Fixed no Internet connection incorrect message.(bug#008).\n
-*Fixed Hardware Back Button bug.\n
-*Changes in the UI.\n
-\t- Fixed some misaligned objects in landscape mode.\n
-\t- Fixed some background colors.\n
-*Fixed Screen flickering when pressing Hardware Back button.\n
-*Fixed release notes separator.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*If a legajo is not encountered in database it won't show an error.\n
-*When Hardware Back Button is pressed, the app stop working correctly.(bug#012).\n
-*Random crash occurs when restoring from suspension.\n
-*Horarios Page are not working after pressing Hardware Back button.\n
-*Horarios don't clean up when navigate back.(#bug6161013).\n
-\n
-------------------\n
-V0.86b\n
-*Fixed Screen flickering in the Main Page.(bug#001).\n
-*Fixed can't exit from the app pressing Hardware Back button.\n
-*Changes in the UI.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Screen flickering when pressing Hardware Back button.(bug#009).\n
-*If a legajo is not encountered in database it won't show an error.\n
-*After restoring app from suspension, Hardware Back Button is not working correctly in Horarios Page.\n
-*When no Internet connection is available it shows incorrect message.(bug#008).\n
-*Random crash occurs when restoring from suspension.\n
-*Horarios don't clean up when navigate back.(#bug013).\n
-\n
-------------------\n
-V0.85b\n
-*Fixed release notes aren't being displayed.\n
-*Fixed minor bugs.\n
-*Redesigned Horarios Scroll List.\n
-*Removed unused code"
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).\n
-*If a legajo is not encountered in database it won't show an error.\n
-*After suspension, Hardware Back Button is not working correctly.\n
-*Random crash occurs when restoring from suspension.\n
-*Can't exit from the app pressing Hardware Back button.\n
-\n
-------------------\n
-V0.84b\n
-*Centered some graphics in Horarios Page.\n
-*Fixed Hyper-links in Release Notes Page aren't working.\n
-*Fixed when navigating to Release Notes Page with a previous error messages, the error messages still appears.\n
-*Fixed Release Notes button should not be active in the Release Notes page.\n
-*Fixed author Hyper-link size in Release Notes page.\n
-*Fixed some texts.\n
-*Changes in the source code for easy identification.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).\n
-*If a legajo is not encountered in database it won't show an error.\n
-*After suspension, Hardware Back Button is not working correctly.\n
-*Random crash occurs when restoring from suspension.\n
-*The store column is not sized correctly.\n
-*Release notes aren't being displayed.\n
-*When navigating to Release Notes Page with a previous error messages, the error messages still appears.\n
-\n
-------------------\n
-V0.83b\n
-*Fixed some misaligned graphics.\n
-*Fixed some graphic corruptions.\n
-*Fixed some texts.\n
-*Fixed Release Notes button functionality.\n
-*Fixed hyper-links functionality.\n
-*Fixed left side of the scroll list is out of screen in portrait mode.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).\n
-*If a legajo is not encountered in database it won't show an error.\n
-*After suspension, Hardware Back Button is not working correctly.\n
-*Random crash occurs when restoring from suspension.\n
-The store column is not sized correctly.\n
-\n
-------------------\n
-V0.82b\n
-*Redesigned Main Page.\n
-*Redesigned Horarios Page.\n
-*Fix auto-adaptive content in all pages.\n
-*Fixed landscape and portrait mode.\n
-*Added Release Notes Page.\n
-*Fixed hyper-links directions.\n
-*Changed some translations.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).\n
-*If a legajo is not encountered in database it won't show an error.\n
-*In portrait mode the left side of the scroll list is out of screen.\n
-*Release Notes button is not working.\n
-*After suspension, Hardware Back Button is not working correctly.\n
-*Random crash occurs when restoring from suspension.\n
-*Hyper-links buttons doesn't work anymore.\n
-\n
-------------------\n
-V0.81b\n
-*Added most icons and splash screens.\n
-*Cleaning code.\n
-*Reduced sizes in images.\n
-*Changed some texts.\n
-*Changes in the UI.\n
-*Alignments in the UI.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Landscape mode is not being showed correctly.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001)\n
-*If a legajo is not encountered in database it won't show an error.\n
-\n
-------------------\n
-V0.8a\n
-*Now app is fully working.\n
-*Fixed some translations.\n
-*Fixed Back Button.\n
-\t- Now pressing Hardware Back button should always go back to the Main Page.\n
-*Added app version in the Main Page.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Landscape mode is not being showed correctly.\n
-*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001)\n
-*If a legajo is not encountered in database it won't show an error.\n
-\n
-------------------\n
-V0.7a\n
-*Fixed some error messages.\n
-*Now, empty legajo is rejected.\n
-*Fixed all error handlers.\n
-\t- Green message status now close when navigate back.\n
-\t- Database errors are reported correctly now.\n
-*Improvements in the UI.\n
-*Minor changes in the UI.\n
-*Fixed minor bugs.\n
-*Changes in the Source Code and cleaning.\n
-*Removed more unused code.\n
-*Fixed User Agent(Mozilla / 5.0).\n
-*Now the database can be parsed if it's loaded from the Internet.\n
-\n
-Know Bugs :\n
-*Loading message is not being show.\n
-*Landscape mode is not being showed correctly.\n
-\n
-------------------\n
-V0.6a\n
-*Changes in the UI.\n
-*Changes in the source code for easy identification.\n
-*Removed unused code.\n
-*Fix for small screens.\n
-*Fixed hyper-link buttons.\n
-*Fix for Auto-adaptive Content in the Horarios Page.\n
-*Fixed Spanish translations.\n
-*Fixed error messages in Main Page.\n
-*Optimized code.\n
-*Aligned some texts.\n
-*Fixed error handlers.\n
-\n
-Know Bugs :\n
-*Empty legajo is accepted.\n
-*Loading message is not being show.\n
-*Green message status doesn't close when going back to the Main Page.\n
-*Database errors are now reported.\n
-*The database can't be parsed if it readed from the Internet\n
-*Landscape mode is not being showed correctly.\n
-\n
-------------------\n
-V0.1a (First release)\n
-(Nov / 7 / 2016)\n
-\n
+﻿V1.62
+*We merged BK and SBX solution in one.
+*Rewritten and improved all code.
+*Translated to C# .Net 4.5.1.
+*Fixed various bugs.
+*Updated FooterPanel to V4.
+ - *Now in Settings we include a privacy link to pass Store certification.
+*Fixed typos in ReleaseNotes.
+*Translation improvements.
+*Now loading ReleaseNotes text don't block the GUI.
+*Fixed loading animation.
+*Changed default windows size and minimum resize.
+*Improved colors design.
+*Improved animations.
+*Fix design in HorariosPage.
+x Added Fluent effects.
+x Added support to ARM64.
+------------------
+V1.47
+*Fixed crash in MainPage.
+*Cache multiple legajos.
+*Improved code.
+*Removed unused code.
+*Fixed bug#090.
+*Updated language to Spanish-Argentina.
+*Minor translations fixes.
+*GUI fixes in WelcomePage.
+*GUI fixes in HorariosPage.
+*GUI fixes in StatusMessage.
+*Changed minimum required Windows version to 10.0.10586.
+*Fixed BadgeLogo assets for certification.
+*Update Web-page URL.
+*Updated certificates.
+*Updated project to VS2019.
+
+------------------
+V1.33
+*Fixed navigation back.
+*Fixed tool-bar.
+*A lot of improvements.
+
+------------------
+V1.26
+*Now can be installed on the SD card.
+*Better performance.
+*Fixed images.
+*Added keyboard navigation.
+*Changes and improvements on the readability of Horarios Page.
+*Minor changes and fixes.
+*Reduced app size.
+*Fixed navigation on Desktop version.
+*Updated texts.
+*Fixed bugs.
+*Added update notification.
+*Retry on Internet error connection.
+*UI changes and improvements.
+
+------------------
+V1.25
+*Fixed navigation.
+*Updated texts.
+*Fixed bugs.
+
+------------------
+V1.2
+*Fixed icons.
+
+------------------
+V1.19
+*New and improved design.
+*Fixed a lot of bugs..
+*Speed improvements.
+*Animations improvements.
+*Removed expiration time.
+*Network connection improvement.
+*Fixed some translations.
+*Added missing error messages.
+*New BackButtonPressed handler.
+
+------------------
+V1.18
+*Minor GUI and code corrections.
+*Added update text.
+*Added x64 platform.
+*Expiration for Windows 10 devices.
+
+------------------
+V1.17
+*Updated WebSite.
+*Now all Windows 10 versions from 10.0.10240 are supported.
+*Minor Fixes.
+
+Know Bugs :
+
+------------------
+V1.16
+*Fixed Can't exit from app in Welcome Page pressing Hardware Back Button.(bug#070).
+*Preventively blocked 'turned views' on mobile devices causing GUI glitches.
+*Fixed text alignment in Release Notes Page.
+*Minor source code fixes.
+*Updated Manifests.
+
+Know Bugs :
+
+------------------
+V1.15
+*Fixed grid in Horarios Page on landscape mode.
+*Fixed elements in Welcome Page on landscape mode.
+*Minor GUI fixes.
+*Fixed transitions.
+*Changed some translations.
+*Fixed corruption in portrait mode.
+*Added loading animation on HorariosPage.
+*Fixed Grid transparencies.
+*Fixed 3D title effect on Horarios Page.
+*Now 'Legajo' and 'Fecha de consulta' are hidden until page is loaded.
+*Alerts if the content is readed from cache.
+
+Know Bugs :
+*Can't exit from app in Welcome Page pressing Hardware Back Button.
+
+------------------
+V1.1
+*Fixed a bug that causes a crash on desktop devices.
+*Changes and fixes in WelcomePage GUI.
+*Fixed some translations.
+*Fixed size elements on desktop devices.
+*Fixed FooterPanel in all pages.
+*Changed all titles to new 3d look.
+*Changed all old buttons to new look 3D buttons in all pages.
+*New and redesigned ReleaseNotesPage.
+*Added animations and transitions.
+*New look at HorariosPage.
+*Fix auto scale in all pages.
+*Fixed items in HorariosPage they are not selectable.
+*Changed filenames and project name.
+
+Know Bugs :
+
+------------------
+V1.02
+*New and redesigned MainPage.
+*Now pages are centered correctly in landscape mode.
+*Revised and fixed translations.
+*Revised source code.
+ - *A lot of changes and minor fixes.
+*Deleted unused code and files.
+*Fixed some wrong error messages text.
+*Updated certificates.
+*Fixed a random bug related to SuspensionManager.
+
+Know Bugs :
+
+------------------
+V1.01
+*Fixes in App.xaml.
+*Fixed some translations in source code.
+*Fixed bad version in Windows Store.
+*Deleted unused code.
+
+Know Bugs :
+
+------------------
+V1.00 (Final release)
+*Added cache off-line read for no Internet connection.
+*Save my last used legajo.
+*Deleted unused files.
+*Changes in source code.
+ - Deleted unused code.
+ - Optimized functions.
+ - Better comments.
+*Fixed error handler for no Internet connection.
+*Minor fixes on some texts.
+*Updated manifest.
+*Speed and memory improvement.
+*Changed problematic functions.
+*Fixed after suspension, can't go back from Horarios Page pressing Hardware Back Button.(bug#022
+*Better suspension Manager.
+
+Know Bugs :
+
+------------------
+V0.91rc
+*Minor changes in source code
+*Store App Certification for Windows 10
+
+Know Bugs :
+*After suspension, can't go back from Horarios Page pressing Hardware Back Button.
+
+------------------
+V0.9rp
+*Revised code.
+*Fixed minor bug in Main Page.
+*Removed unused code and reduced app size.
+*Changed some font sizes.
+*Fixed an uppercase in titles.
+*Fixed horarios don't clean up when navigating back.(#bug013).
+*Fixed can't exit from app.
+*Fixed Hardware Back Button bugs.(bug#012), (bug#014).
+*Fixed Error messages bugs.(bug#016).
+*Fixed when Hardware Back Button is pressed, the app stop working correctly.(bug#012).
+*Fixed if a legajo is not encountered in database it won't show an error.
+*Fixed translations.
+*Fixed random crash occurs when restoring from suspension.
+*Fixed Horarios Page are not working after pressing Hardware Back button.
+*Fixed navigation bug that occurs under certain conditions.(bug#021).
+
+Know Bugs :
+
+------------------
+V0.87b
+*Added better handler for no Internet connection.
+*A lot of changes in the source code.
+*Fixed no Internet connection incorrect message.(bug#008).
+*Fixed Hardware Back Button bug.
+*Changes in the UI.
+- Fixed some misaligned objects in landscape mode.
+- Fixed some background colors.
+*Fixed Screen flickering when pressing Hardware Back button.
+*Fixed release notes separator.
+
+Know Bugs :
+*Loading message is not being show.
+*If a legajo is not encountered in database it won't show an error.
+*When Hardware Back Button is pressed, the app stop working correctly.(bug#012).
+*Random crash occurs when restoring from suspension.
+*Horarios Page are not working after pressing Hardware Back button.
+*Horarios don't clean up when navigate back.(#bug6161013).
+
+------------------
+V0.86b
+*Fixed Screen flickering in the Main Page.(bug#001).
+*Fixed can't exit from the app pressing Hardware Back button.
+*Changes in the UI.
+
+Know Bugs :
+*Loading message is not being show.
+*Screen flickering when pressing Hardware Back button.(bug#009).
+*If a legajo is not encountered in database it won't show an error.
+*After restoring app from suspension, Hardware Back Button is not working correctly in Horarios Page.
+*When no Internet connection is available it shows incorrect message.(bug#008).
+*Random crash occurs when restoring from suspension.
+*Horarios don't clean up when navigate back.(#bug013).
+
+------------------
+V0.85b
+*Fixed release notes aren't being displayed.
+*Fixed minor bugs.
+*Redesigned Horarios Scroll List.
+*Removed unused code
+
+Know Bugs :
+*Loading message is not being show.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).
+*If a legajo is not encountered in database it won't show an error.
+*After suspension, Hardware Back Button is not working correctly.
+*Random crash occurs when restoring from suspension.
+*Can't exit from the app pressing Hardware Back button.
+
+------------------
+V0.84b
+*Centered some graphics in Horarios Page.
+*Fixed Hyper-links in Release Notes Page aren't working.
+*Fixed when navigating to Release Notes Page with a previous error messages, the error messages still appears.
+*Fixed Release Notes button should not be active in the Release Notes page.
+*Fixed author Hyper-link size in Release Notes page.
+*Fixed some texts.
+*Changes in the source code for easy identification.
+
+Know Bugs :
+*Loading message is not being show.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).
+*If a legajo is not encountered in database it won't show an error.
+*After suspension, Hardware Back Button is not working correctly.
+*Random crash occurs when restoring from suspension.
+*The store column is not sized correctly.
+*Release notes aren't being displayed.
+*When navigating to Release Notes Page with a previous error messages, the error messages still appears.
+
+------------------
+V0.83b
+*Fixed some misaligned graphics.
+*Fixed some graphic corruptions.
+*Fixed some texts.
+*Fixed Release Notes button functionality.
+*Fixed hyper-links functionality.
+*Fixed left side of the scroll list is out of screen in portrait mode.
+
+Know Bugs :
+*Loading message is not being show.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).
+*If a legajo is not encountered in database it won't show an error.
+*After suspension, Hardware Back Button is not working correctly.
+*Random crash occurs when restoring from suspension.
+The store column is not sized correctly.
+
+------------------
+V0.82b
+*Redesigned Main Page.
+*Redesigned Horarios Page.
+*Fix auto-adaptive content in all pages.
+*Fixed landscape and portrait mode.
+*Added Release Notes Page.
+*Fixed hyper-links directions.
+*Changed some translations.
+
+Know Bugs :
+*Loading message is not being show.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001).
+*If a legajo is not encountered in database it won't show an error.
+*In portrait mode the left side of the scroll list is out of screen.
+*Release Notes button is not working.
+*After suspension, Hardware Back Button is not working correctly.
+*Random crash occurs when restoring from suspension.
+*Hyper-links buttons doesn't work anymore.
+
+------------------
+V0.81b
+*Added most icons and splash screens.
+*Cleaning code.
+*Reduced sizes in images.
+*Changed some texts.
+*Changes in the UI.
+*Alignments in the UI.
+
+Know Bugs :
+*Loading message is not being show.
+*Landscape mode is not being showed correctly.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001)
+*If a legajo is not encountered in database it won't show an error.
+
+------------------
+V0.8a
+*Now app is fully working.
+*Fixed some translations.
+*Fixed Back Button.
+- Now pressing Hardware Back button should always go back to the Main Page.
+*Added app version in the Main Page.
+
+Know Bugs :
+*Loading message is not being show.
+*Landscape mode is not being showed correctly.
+*Screen flickering in the Main Page when pressing Hardware Back button.(bug#001)
+*If a legajo is not encountered in database it won't show an error.
+
+------------------
+V0.7a
+*Fixed some error messages.
+*Now, empty legajo is rejected.
+*Fixed all error handlers.
+- Green message status now close when navigate back.
+- Database errors are reported correctly now.
+*Improvements in the UI.
+*Minor changes in the UI.
+*Fixed minor bugs.
+*Changes in the Source Code and cleaning.
+*Removed more unused code.
+*Fixed User Agent(Mozilla / 5.0).
+*Now the database can be parsed if it's loaded from the Internet.
+
+Know Bugs :
+*Loading message is not being show.
+*Landscape mode is not being showed correctly.
+
+------------------
+V0.6a
+*Changes in the UI.
+*Changes in the source code for easy identification.
+*Removed unused code.
+*Fix for small screens.
+*Fixed hyper-link buttons.
+*Fix for Auto-adaptive Content in the Horarios Page.
+*Fixed Spanish translations.
+*Fixed error messages in Main Page.
+*Optimized code.
+*Aligned some texts.
+*Fixed error handlers.
+
+Know Bugs :
+*Empty legajo is accepted.
+*Loading message is not being show.
+*Green message status doesn't close when going back to the Main Page.
+*Database errors are now reported.
+*The database can't be parsed if it readed from the Internet
+*Landscape mode is not being showed correctly.
+
+------------------
+V0.1a (First release)
+(Nov / 7 / 2016)

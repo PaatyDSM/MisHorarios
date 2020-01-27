@@ -15,17 +15,12 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)utils\Cpp_Functions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)utils\Helpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)utils\HttpJsonContent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)utils\PaatyDSM_utils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)utils\PlugInFilter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)utils\JSonDbUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)utils\AlseaJSON.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)styles\Styles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -70,5 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)ReleaseNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="$(MSBuildThisFileDirectory)Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
   </ItemGroup>
 </Project>

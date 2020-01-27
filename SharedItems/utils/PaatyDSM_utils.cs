@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 namespace PaatyDSM
 {
     /// <summary>
-    /// Load a text file embedded resource.
+    /// Load embedded resources.
     /// </summary>
     public static class LoadResource
     {
@@ -28,6 +28,7 @@ namespace PaatyDSM
                 {
                     text = reader.ReadToEnd();
                 }
+                stream.Dispose();
                 return text;
             }
             catch
@@ -37,10 +38,13 @@ namespace PaatyDSM
         }
     }
 
+    /// <summary>
+    /// PaatyDSM Utilities
+    /// </summary>
     public static class Utils
     {
         /// <summary>
-        /// Returns version like v1.5
+        /// Returns current app version like v1.5.
         /// </summary>
         public static string GetAppVersion()
         {
@@ -52,7 +56,7 @@ namespace PaatyDSM
         }
 
         /// <summary>
-        /// Returns current project name
+        /// Returns current project name.
         /// </summary>
         public static string GetCurrentProjectName()
         {
@@ -61,7 +65,7 @@ namespace PaatyDSM
         }
 
         /// <summary>
-        /// Launch UWP apps in full-screen mode on mobile devices and tablets, desktop or both.
+        /// Launch UWP apps in full-screen mode.
         /// </summary>
         /// <param name="device">0 for Mobile and Tablets, 1 for PC and 2 for both platforms</param>
         public static void SetFullScreenModeON(int device)
@@ -90,12 +94,58 @@ namespace PaatyDSM
                 view.TryEnterFullScreenMode();
             }
         }
+
+        public static string TryReadFile(string folder, string filename)
+        {
+            try
+            {
+                using (var reader = new StreamReader(File.OpenRead(folder + "\\" + filename)))
+                {
+                    string text = "";
+                    while (!reader.EndOfStream)
+                    {
+                        text = reader.ReadLine();
+                    }
+                    return text;
+                }
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch
+            {
+                return "";
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+        }
+
+        public static void TryWriteFile(string folder, string filename, string data)
+        {
+            try
+            {
+                //using (var writer = new StreamReader(File.OpenWrite(folder + "\\" + filename)))
+                {
+                //writer.
+                //    writer.WriteLine(data);
+                }
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch
+            {
+                //return "";
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+        }
+
     }
 
+    /// <summary>
+    /// PaatyDSM FooterPanel Actions
+    /// </summary>
     public static class FooterPanelActions
     {
-        // On click 'Hyper-links'
-        public static async void Footer_Click(object sender, object e)
+        /// <summary>
+        /// Hyper-link Action.
+        /// </summary>
+        public static async void Footer_Cli2ck(object sender, object e)
         {
             //123123123
             await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));

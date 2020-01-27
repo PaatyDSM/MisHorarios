@@ -1,14 +1,17 @@
 ﻿using System;
-
-using PaatyDSM.Utils;
+using System.Threading;
+using PaatyDSM;
 
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Automation.Peers;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
 
 namespace MisHorarios
 {
@@ -23,8 +26,19 @@ namespace MisHorarios
         // Referencia al FooterPanelV4.
         public static Grid footerPanel;
 
-        // Path for local saving
+        // Path for local saving.
         public static readonly string localfolder = ApplicationData.Current.LocalFolder.Path;
+
+        // We are now creating a HttpClient in the constructor and then storing it as a field so that we can reuse it.
+        public static HttpBaseProtocolFilter filter;
+        public static HttpClient httpClient;
+        public static CancellationTokenSource cts;
+
+        // ALSEA URL Server.
+        public static string serverURL = "http://proveedores.alsea.com.ar";
+
+        // string var for saving response as text from.
+        public static string responseBodyAsText = "";
 
         // MainPage
         public MainPage()
@@ -48,7 +62,6 @@ namespace MisHorarios
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             // Set full-screen on mobile devices and tablets.
-            PaatyDSM.Utils.
             Utils.SetFullScreenModeON(0);
 
             // Sets default windows size.
@@ -57,7 +70,7 @@ namespace MisHorarios
             view.SetPreferredMinSize(new Size(280, 420));
 
             // Set version number
-            FP_VersionButton.Content = PaatyDSM.Utils.GetAppVersion();
+            FP_VersionButton.Content = Utils.GetAppVersion();
         }
 
         private void OnPageLoaded(object sender, object e)
@@ -98,6 +111,10 @@ namespace MisHorarios
             {
                 StatusBorder.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             }
+
+            // Raise an event if necessary to enable a screen reader to announce the status update.
+            var peer = FrameworkElementAutomationPeer.FromElement(StatusBlock);
+            peer?.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
         }
 
         /// <summary>
@@ -110,7 +127,7 @@ namespace MisHorarios
             DebugMessage
         };
 
-        // Start _MainPage_to_ReleaseNotes_FadeOut animation.
+        // Start MainPage_to_ReleaseNotes_FadeOut animation.
         private void Click_MainPage_to_ReleaseNotes_FadeOut(object sender, RoutedEventArgs e)
         {
             MainPage_to_ReleaseNotes_FadeOut.Begin();
@@ -124,5 +141,13 @@ namespace MisHorarios
 
             Page_Frame.Navigate(typeof(ReleaseNotesPage), null);
         }
+
+        // On click 'Hyper-links'
+        private async void Footer_Click(object sender, object e)
+        {
+            //123123123
+            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+        }
+
     }
 }

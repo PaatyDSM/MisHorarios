@@ -10,20 +10,20 @@
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="0.0"
 			                 To="1.0"
-			                 Duration="0:0:0.5">
+			                 Duration="0:0:0.6">
 				<DoubleAnimation.EasingFunction>
 					<QuinticEase EasingMode="EaseIn" />
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
 		<!--  Storyboard resource: WelcomepPage FadeOut.  -->
-		<Storyboard x:Name="WelcomepPage_FadeOutAnimation">
+		<Storyboard x:Name="WelcomepPage_to_HorariosPage_FadeOut">
 			<DoubleAnimation Completed="NavigatetoHorariosPage"
 			                 Storyboard.TargetName="Page"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="1.0"
 			                 To="0.0"
-			                 Duration="0:0:0.25">
+			                 Duration="0:0:0.6">
 				<DoubleAnimation.EasingFunction>
 					<QuinticEase />
 				</DoubleAnimation.EasingFunction>
@@ -33,8 +33,7 @@
 
 	<!--  Page  -->
 	<Grid x:Name="Page"
-	      Loaded="Start_FadeInAnimation"
-	      Opacity="1">
+	      Loaded="Start_FadeInAnimation">
 
 		<!--  BackgroundImage  -->
 		<Grid.Background>
@@ -181,7 +180,7 @@
 				        VerticalAlignment="Center"
 				        Background="Transparent"
 				        BorderThickness="1,1,2,2"
-				        Click="Send_legajo_button"
+				        Click="Verify_and_SendLegajo"
 				        Content="Consultar horarios"
 				        FontFamily="Segoe WP"
 				        FontSize="16"

@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MisHorariosSBX", "MisHorari
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SharedItems", "SharedItems\SharedItems.shproj", "{51FE8C7E-DED0-434C-941D-6A632B89D54F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3C5EDB36-44D8-41F0-9E0E-15BCF017176F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedItems\SharedItems.projitems*{22b805cb-b10f-4981-81ec-89d206b7278b}*SharedItemsImports = 4

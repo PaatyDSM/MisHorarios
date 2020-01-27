@@ -30,87 +30,78 @@ namespace MisHorarios
         // OnNavigatedTo function
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Content.ToString() == "BackButtonPressed")
-            {
-                // Clear errors
-                rootPage.NotifyUser("", NotifyType.StatusMessage);
-            }
+            // Clear status messages when BackButton is pressed.
+            if (e.Content.ToString() == "BackButtonPressed") rootPage.NotifyUser("", NotifyType.StatusMessage);
 
-            // Set title and colors
-            if (GetCurrentProjectName() == "Mis Horarios SBX")
-            {
-                APP_TITLE.Text = GetCurrentProjectName();
-            }
-            else
-            {
-                APP_TITLE.Text = GetCurrentProjectName();
-            }
+            // Set title and colors.
+            SetTitleAndColors();
 
+            //123123123
             footerPanel.Visibility = Visibility.Visible;
 
             // Read last used legajo
-            Read_legajo();
+            main_legajo_input.Text = Utils.TryReadFile(localfolder, "legajoLast.tmp");
 
             // Check for updates
             //CheckUpdates();
         }
 
-        // Read last used legajo
-        private void Read_legajo()
+        public void SetTitleAndColors()
         {
-            // Read file
-            try
+            if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
             {
-                var reader = new StreamReader(File.OpenRead(localfolder + "\\legajoLast.tmp"));
-                while (!reader.EndOfStream)
-                {
-                    // Put legajo into TextBox
-                    main_legajo_input.Text = reader.ReadLine();
-                }
-                reader.Dispose();
+                APP_TITLE.Text = Utils.GetCurrentProjectName();
             }
-            catch { }
+            else
+            {
+                APP_TITLE.Text = Utils.GetCurrentProjectName();
+            }
         }
 
         // On click 'Consultar Horarios' validate Legajo and send it to the next page 'HorariosPage'
-        private void Send_legajo_button(object sender, object e)
+        private void Verify_and_SendLegajo(object sender, object e)
         {
             // Clear errors
             rootPage.NotifyUser("", NotifyType.StatusMessage);
 
             // Check if 'legajo' is valid
-            var check = main_legajo_input.Text.FindFirstNotOf("0123456789");
+            if (ValidLegajo(main_legajo_input.Text))
 
-            // Error handler and error messages
+                // Start FadeOutAnimation
+                Click_WelcomepPage_to_HorariosPage_FadeOut(null, null);
+        }
+
+        private bool ValidLegajo(string legajo)
+        {
+            var check = legajo.FindFirstNotOf("0123456789");
+
             // If no input
-            if (main_legajo_input.Text.Length == 0)
+            if (legajo.Length == 0)
             {
                 rootPage.NotifyUser("Primero tenés que ingresar un legajo.", NotifyType.ErrorMessage);
+                return false;
             }
             // If illegal character
             else if (check != -1)
             {
                 rootPage.NotifyUser("El legajo que ingresaste no es válido.", NotifyType.ErrorMessage);
+                return false;
             }
-            // If valid
-            else
-            {
-                // Start FadeOutAnimation
-                Start_FadeOutAnimation(null, null);
-            }
+            else return true;
         }
 
-        // Function start FadeOutAnimation
-        private void Start_FadeOutAnimation(object sender, object e)
+        // Start FadeOutAnimation
+        private void Click_WelcomepPage_to_HorariosPage_FadeOut(object sender, object e)
         {
-            WelcomepPage_FadeOutAnimation.Begin();
+            footerPanel.Visibility = Visibility.Collapsed;
+            WelcomepPage_to_HorariosPage_FadeOut.Begin();
         }
 
         // Navigate to HorariosPage
         private void NavigatetoHorariosPage(object sender, object e)
         {
             // Navigate to HorariosPage and send parameters
-            Frame.Navigate(typeof(HorariosPage), main_legajo_input.Text);
+            frame.Navigate(typeof(HorariosPage), main_legajo_input.Text);
         }
     }
 }

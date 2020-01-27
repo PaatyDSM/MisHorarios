@@ -33,13 +33,13 @@ namespace MisHorarios
         {
 
             /* START:DEBUG SECTION */
-#if DEBUG
+            #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Debug Options:
                 //this.DebugSettings.EnableFrameRateCounter = false;
             }
-#endif
+            #endif
             /* END:DEBUG SECTION */
 
             // No repetir la inicialización de la aplicación si la ventana tiene contenido todavía,

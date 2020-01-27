@@ -2,12 +2,10 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
-using HttpClientSample;
-
-using JSonDbUtilities;
+using PaatyDSM;
+using PaatyDSM.Json;
+using Windows.ApplicationModel.Core;
 using Windows.Security.Cryptography.Certificates;
-using Windows.Storage;
 using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -26,42 +24,44 @@ namespace MisHorarios
         // as NotifyUser()
         private readonly MainPage rootPage = Current;
 
-        // We are now creating a HttpClient in the constructor and then storing it as a field so that we can reuse it.
-        private HttpBaseProtocolFilter filter;
-        private HttpClient httpClient;
-        private CancellationTokenSource cts;
-
-        //
-        private string OutputText = string.Empty;
-
-        // Function start_fade-in_animation
-        private void Start_FadeInAnimation()
-        {
-            HorariosPage_FadeInAnimation.Begin();
-        }
-
         // OnNavigatedTo function
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            // Save legajo contained in NavigatinoEventArgs to a string.
+            string legajo = e.Parameter.ToString();
+
             // Un-hide Back Button on Desktop devices.
             SetBackButton();
 
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-            // Create an HttpClient instance with custom cache settings and a CancellationToken.
+            // Create a new HttpClient instance with custom cache settings and a CancellationToken.
+            httpClient?.Dispose();
             filter = new HttpBaseProtocolFilter();
             httpClient = new HttpClient(filter);
             cts = new CancellationTokenSource();
 
-            // Create URL with 'legajo' string.
-            string URL = "http://proveedores.alsea.com.ar:25080/asignaciones-server/mobile/main/asignaciones/legajos/" + e.Parameter.ToString();
+            // Set app URL server.
+            string URL = SetAppURLServer();
 
             // Save last used legajo.
-            Save_last_legajo(e.Parameter.ToString());
+            Save_last_legajo(legajo);
 
             // Start Connection Async.
-            await StartConnectionAsync(URL, e.Parameter.ToString(), 0).ConfigureAwait(false);
+            await StartConnectionAsync(URL + legajo, legajo, 0).ConfigureAwait(false);
+        }
+
+        private string SetAppURLServer()
+        {
+            if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
+            {
+                return serverURL + ":25080/asignaciones-server/mobile/main/asignaciones/legajos/";
+            }
+            else
+            {
+                return serverURL + ":48080/asignaciones-server/mobile/main/asignaciones/legajos/";
+            }
         }
 
         // Start Connection Async
@@ -70,73 +70,22 @@ namespace MisHorarios
             // Show Message.
             rootPage.NotifyUser("Consultando horarios...", NotifyType.StatusMessage);
 
-            // Do an asynchronous GET.
+            // Cache control.
+            filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+            filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+            // Ignore SSL errors.
+            filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+            filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+            // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
+            // Default headers will be sent with every request sent from this HttpClient instance.
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
+
+            // Do an asynchronous GET in separate thread to not block the GUI while receiving the data from internet.
+            // and save it to a variable
             try
             {
-                // Create a new httpClient.
-                //httpClient?.Dispose();
-                // Cache control.
-                filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-                filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-                // Ignore SSL errors.
-                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
-                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
-                // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
-                // Default headers will be sent with every request sent from this HttpClient instance.
-                httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
-
-                // Connect to server and get text.
                 HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask(cts.Token).ConfigureAwait(false);
-
-                string responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
-
-                // Save received text to a variable
-                OutputText = responseBodyAsText.Replace("<br>", Environment.NewLine);
-
-                // Find ':[{' string to check if the data contains a valid legajo info
-                if (OutputText.Contains(":[{"))
-                {
-                    try
-                    {
-                        // Parse JSON
-                        DataContext = new User(OutputText);
-
-                        // Show successful
-                        rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage);
-
-                        // Save cache
-                        Save_cache(OutputText, legajo);
-
-                        // Show ContentPanelInfo
-                        ContentPanelInfo.Visibility = Visibility.Visible;
-
-                        // Show list
-                        List.Visibility = Visibility.Visible;
-                    }
-                    catch (Exception)
-                    {
-                        //123123123
-                        // Database parsing error
-                        rootPage.NotifyUser("Conexión a Internet muy débil.\nReintentando...", NotifyType.ErrorMessage);
-                        if (retry == 0)
-                        {
-                            await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
-                        }
-                        else
-                        {
-                            rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage);
-
-                            // Try to read from cache
-                            Read_cache(legajo, 1);
-                        }
-                    }
-                }
-                else
-                {
-                    // Legajo NOT FOUND error
-                    rootPage.NotifyUser("Legajo inexistente o sin horarios asignados.", NotifyType.ErrorMessage);
-                    GoPageBack(null, null);
-                }
+                responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
@@ -147,16 +96,72 @@ namespace MisHorarios
                 // If no Internet connection is available, check if the last legajo obtained is equal to
                 // the actual legajo and read it from the cache and show a message.
 
+                //retry
+
+                // Show error message.
                 rootPage.NotifyUser("Error. No hay conexión a Internet.", NotifyType.ErrorMessage);
 
-                // Try to read from cache
+                // Try to read from cache.
                 Read_cache(legajo, 0);
             }
-            finally
+
+            // Find ':[{' string to check if the data contains a valid legajo info
+            if (responseBodyAsText.Contains(":[{"))
             {
+                try
+                {
+                    // Parse JSON
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.DataContext = new AlseaJson(responseBodyAsText));
+
+                    // Show successful
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage));
+                }
+                catch (Exception ex1)
+                {
+                    //123123123
+                    // Database parsing error
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.NotifyUser(ex1.ToString(), NotifyType.ErrorMessage));
+
+                    if (retry == 0)
+                    {
+                        await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage);
+
+                        // Try to read from cache
+                        Read_cache(legajo, 1);
+                    }
+                }
+
+                // Save cache
+                //Save_cache(responseBodyAsText, legajo);
+
+                // Show ContentPanelInfo
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ContentPanelInfo.Visibility = Visibility.Visible);
+
+                // Show list
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => List.Visibility = Visibility.Visible);
+
+                // Stop ProgressRing
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => loading_ring.IsActive = false);
+            }
+            else
+            {
+                // Legajo NOT FOUND error
+                rootPage.NotifyUser("Legajo inexistente o sin horarios asignados.", NotifyType.ErrorMessage);
+
                 // Stop ProgressRing
                 loading_ring.IsActive = false;
+                GoPageBack(null, null);
             }
+        }
+
+        // Function start_fade-in_animation
+        private void Start_FadeInAnimation()
+        {
+            HorariosPage_FadeInAnimation.Begin();
         }
 
         // Se invoca cuando se presionan los botones de retroceso de hardware o software.
@@ -219,8 +224,10 @@ namespace MisHorarios
             // Cancel current HTTP connection
             CancelHttpTask();
 
-            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
-            DataContext = new User(OutputText);
+            responseBodyAsText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+
+            // Parse JSON
+            DataContext = new AlseaJson(responseBodyAsText);
 
             // Go to page
             Frame.Navigate(typeof(WelcomePage));
@@ -233,9 +240,10 @@ namespace MisHorarios
             CancelHttpTask();
 
             // Clear List of Horarios
-            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+            responseBodyAsText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
 
-            DataContext = new User(OutputText);
+            // Parse JSON
+            DataContext = new AlseaJson(responseBodyAsText);
 
             // Clear StatusBlock
             rootPage.NotifyUser("", NotifyType.StatusMessage);
@@ -250,9 +258,10 @@ namespace MisHorarios
             CancelHttpTask();
 
             // Clear List of Horarios
-            OutputText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
+            responseBodyAsText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
 
-            DataContext = new User(OutputText);
+            // Parse JSON
+            DataContext = new AlseaJson(responseBodyAsText);
 
             // Clear StatusBlock
             rootPage.NotifyUser("", NotifyType.StatusMessage);
@@ -263,7 +272,7 @@ namespace MisHorarios
 
         // Save cache to a file
         private void Save_cache(string cache, string legajo)
-        {
+        {/*
             // Save last readed horarios from last used legajo to a file
             var writer = new StreamWriter(File.OpenWrite(localfolder + "\\horariosLast.tmp"));
             writer.WriteLine(cache);
@@ -272,22 +281,19 @@ namespace MisHorarios
             // Cache horarios
             var writer2 = new StreamWriter(File.OpenWrite(localfolder + "\\horariosLast" + legajo + ".tmp"));
             writer.WriteLine(cache);
-            writer.Dispose();
+            writer.Dispose();*/
         }
 
         // Read from cache
         private void Read_cache(string legajo, int database_error)
         {
-            // Read file
-            string data = "";
-
             try
             {
                 var reader = new StreamReader(File.OpenRead(localfolder + "\\hoariosLast" + legajo + ".tmp"));
                 while (!reader.EndOfStream)
                 {
                     // Put legajo into TextBox
-                    data = reader.ReadLine();
+                    responseBodyAsText = reader.ReadLine();
                 }
                 reader.Dispose();
             }
@@ -297,10 +303,11 @@ namespace MisHorarios
             string query = "\"legajo\":\"" + legajo + "\"}";
 
             // Check if legajo is valid and then parse JSon
-            if (data.Contains(query))
+            if (responseBodyAsText.Contains(query))
             {
-                // Parse JSon
-                DataContext = new User(data);
+
+                // Parse JSON
+                DataContext = new AlseaJson(responseBodyAsText);
 
                 // Show ContentPanelInfo
                 ContentPanelInfo.Visibility = Visibility.Visible;

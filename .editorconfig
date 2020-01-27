@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# RCS1163: Unused parameter.
+dotnet_diagnostic.RCS1163.severity = none

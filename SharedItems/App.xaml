@@ -4,10 +4,15 @@
              RequestedTheme="Light">
 
 	<Application.Resources>
-		<!--  Application-specific resources  -->
+		<!-- Application-specific resources -->
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="/SharedItems/styles/Styles.xaml" />
+
+				<!-- 
+                    Styles that define common aspects of the platform look and feel
+                    Required by Visual Studio project and item templates
+                 -->
+				<!-- <ResourceDictionary Source="/SharedItems/Styles/Styles.xaml"/> -->
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

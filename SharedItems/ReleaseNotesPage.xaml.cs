@@ -1,9 +1,7 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System;
 
 using PaatyDSM;
-
+using Windows.ApplicationModel.Core;
 using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -23,7 +21,7 @@ namespace MisHorarios
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // Set Back Button on Desktop devices
+            // Un-hide Back Button on Desktop devices.
             SetBackButton();
 
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
@@ -40,9 +38,7 @@ namespace MisHorarios
         // Set Back Button on Desktop devices
         private void SetBackButton()
         {
-            string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
-
-            if (platformFamily.Equals("Windows.Mobile"))
+            if (AnalyticsInfo.VersionInfo.DeviceFamily.Equals("Windows.Mobile"))
             {
                 BackButtonPC.Opacity = 0;
             }
@@ -64,28 +60,31 @@ namespace MisHorarios
         // Navigation: Back Button
         private void BackToMainPage(object sender, object e)
         {
-            MainPage.frame.Navigate(typeof(WelcomePage));
+            frame.Navigate(typeof(WelcomePage));
         }
 
         private async void LoadReleaseNotes(object sender, object e)
         {
             // Run in separate thread to not block the GUI while releaseNotes text is loading.
-            await LoadReleaseNotesAsync().ConfigureAwait(false);
-
-            //Notes.VerticalAlignment = ...;
-        }
-
-        private async Task LoadReleaseNotesAsync()
-        {
-            await Task.Run(() =>
+            try
             {
-                // Load ReleaseNotes file
-                Notes.Text = LoadResource.ReadReleaseNotes();
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    // Load ReleaseNotes file
+                    Notes.Text = LoadResource.ReadReleaseNotes();
 
-                // Stop ProgressRing
-                //loading_ring.IsActive = false;
+                    // Stop ProgressRing
+                    loading_ring.IsActive = false;
+                });
+            }
+            catch (Exception ex)
+            {
+                Notes.Text = "Error: Las notas de publicación no pudieron se leídas.";
 
-            }).ConfigureAwait(false);
+                #if DEBUG
+                Notes.Text = "Error: Las notas de publicación no pudieron se leídas. Details:" + ex.ToString();
+                #endif
+            }
         }
     }
 }
