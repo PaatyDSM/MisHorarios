@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+
 using Windows.ApplicationModel;
 using Windows.System.Profile;
 using Windows.UI.ViewManagement;
@@ -97,15 +98,18 @@ namespace PaatyDSM
 
         public static string TryReadFile(string folder, string filename)
         {
+            Stream stream = null;
             try
             {
-                using (var reader = new StreamReader(File.OpenRead(folder + "\\" + filename)))
+                stream = new FileStream(folder + "\\" + filename, FileMode.Open);
+                using (StreamReader reader = new StreamReader(stream))
                 {
                     string text = "";
                     while (!reader.EndOfStream)
                     {
                         text = reader.ReadLine();
                     }
+                    reader.Dispose();
                     return text;
                 }
             }
@@ -115,40 +119,50 @@ namespace PaatyDSM
                 return "";
             }
 #pragma warning restore CA1031 // Do not catch general exception types
+            finally
+            {
+                stream?.Dispose();
+            }
         }
 
         public static void TryWriteFile(string folder, string filename, string data)
         {
+            Stream stream = null;
             try
             {
-                //using (var writer = new StreamReader(File.OpenWrite(folder + "\\" + filename)))
+                stream = new FileStream(folder + "\\" + filename, FileMode.Create);
+                using (StreamWriter writer = new StreamWriter(stream))
                 {
-                //writer.
-                //    writer.WriteLine(data);
+                    if (data != null)
+                        writer.WriteLine(data);
+                    else writer.WriteLine("");
                 }
             }
 #pragma warning disable CA1031 // Do not catch general exception types
-            catch
+            catch (Exception e)
             {
-                //return "";
+                throw new Exception("Can't access/write the file. Details:" + e);
             }
 #pragma warning restore CA1031 // Do not catch general exception types
+            finally
+            {
+                stream?.Dispose();
+            }
         }
 
-    }
-
-    /// <summary>
-    /// PaatyDSM FooterPanel Actions
-    /// </summary>
-    public static class FooterPanelActions
-    {
         /// <summary>
-        /// Hyper-link Action.
+        /// PaatyDSM FooterPanel Actions
         /// </summary>
-        public static async void Footer_Cli2ck(object sender, object e)
+        public static class FooterPanelActions
         {
-            //123123123
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+            /// <summary>
+            /// Hyper-link Action.
+            /// </summary>
+            public static async void Footer_Cli2ck(object sender, object e)
+            {
+                //123123123
+                await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+            }
         }
     }
 }

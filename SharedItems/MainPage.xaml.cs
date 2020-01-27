@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+
 using PaatyDSM;
 
 using Windows.Foundation;
@@ -23,6 +24,7 @@ namespace MisHorarios
         public static Frame frame;
         // Referencia al Grid principal (para controlar efectos de animación).
         public static Grid main_Grid;
+
         // Referencia al FooterPanelV4.
         public static Grid footerPanel;
 
@@ -148,6 +150,5 @@ namespace MisHorarios
             //123123123
             await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
         }
-
     }
 }

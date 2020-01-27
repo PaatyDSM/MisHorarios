@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-using PaatyDSM;
+﻿using PaatyDSM;
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -44,6 +41,8 @@ namespace MisHorarios
 
             // Check for updates
             //CheckUpdates();
+
+            ProgressRing_Animation1.IsActive = false;
         }
 
         public void SetTitleAndColors()
@@ -66,9 +65,10 @@ namespace MisHorarios
 
             // Check if 'legajo' is valid
             if (ValidLegajo(main_legajo_input.Text))
-
+            {
                 // Start FadeOutAnimation
                 Click_WelcomepPage_to_HorariosPage_FadeOut(null, null);
+            }
         }
 
         private bool ValidLegajo(string legajo)

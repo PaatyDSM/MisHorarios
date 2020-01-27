@@ -48,16 +48,13 @@
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<!--  HiddenOutputField  -->
-		<TextBox x:Name="HiddenOutputField" Visibility="Collapsed" />
-
 		<!--  ContentPanel  -->
 		<StackPanel x:Name="ContentPanel"
 		            Margin="0,18,0,0"
 		            VerticalAlignment="Center"
 		            Background="#99211200">
 
-			<!--  title_textblock  -->
+			<!--  Title  -->
 			<Viewbox x:Name="title_textblock" MaxWidth="360">
 				<TextBlock x:Name="APP_TITLE"
 				           Margin="24,8"
@@ -205,6 +202,13 @@
 				</Button>
 			</Grid>
 		</StackPanel>
+
+		<!--  Animación de carga  -->
+		<ProgressRing x:Name="ProgressRing_Animation1"
+			              Width="150"
+			              Height="150"
+			              Foreground="#FF21804B"
+			              IsActive="True" />
 
 		<!--  UpdatePanel  -->
 		<Grid x:Name="UpdatePanel"

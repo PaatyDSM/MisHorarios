@@ -120,13 +120,14 @@
 				         TextWrapping="Wrap" />
 			</ScrollViewer>
 
-			<!--  ProgressRing_animation  -->
-			<ProgressRing x:Name="loading_ring"
-			              Width="180"
-			              Height="180"
-			              Foreground="#FF21804B"
-			              IsActive="True" />
-
 		</Grid>
+
+		<!--  Animación de carga  -->
+		<ProgressRing x:Name="ProgressRing_Animation2"
+			              Width="150"
+			              Height="150"
+			              Foreground="#FF21804B"
+			              IsActive="True"
+						  Grid.Row="1"/>
 	</Grid>
 </Page>

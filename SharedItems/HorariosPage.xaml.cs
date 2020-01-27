@@ -1,9 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
 using PaatyDSM;
 using PaatyDSM.Json;
+
 using Windows.ApplicationModel.Core;
 using Windows.Security.Cryptography.Certificates;
 using Windows.System.Profile;
@@ -14,19 +15,26 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using Windows.Web.Http.Headers;
+
 using static MisHorarios.MainPage;
 
 namespace MisHorarios
 {
     public sealed partial class HorariosPage : Page
     {
-        // A pointer back to the main page.  This is needed if you want to call methods in MainPage such
-        // as NotifyUser()
+        // A pointer back to the main page.  This is needed if you want to call methods in MainPage such as NotifyUser()
         private readonly MainPage rootPage = Current;
+
+        public HorariosPage()
+        {
+            InitializeComponent();
+        }
 
         // OnNavigatedTo function
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            HorariosPage_FadeIn.Begin();
+
             // Save legajo contained in NavigatinoEventArgs to a string.
             string legajo = e.Parameter.ToString();
 
@@ -36,7 +44,7 @@ namespace MisHorarios
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-            // Create a new HttpClient instance with custom cache settings and a CancellationToken.
+            // Crear una nueva instancia del HttpClient con parámetros personalizados de caché y un token de cancelación.
             httpClient?.Dispose();
             filter = new HttpBaseProtocolFilter();
             httpClient = new HttpClient(filter);
@@ -45,13 +53,35 @@ namespace MisHorarios
             // Set app URL server.
             string URL = SetAppURLServer();
 
-            // Save last used legajo.
-            Save_last_legajo(legajo);
+            // Guardar el último legajo utilizado.
+            // TrySaveCache(legajo);
 
-            // Start Connection Async.
+            // Establecer la conexión al servidor y obtener los datos.
             await StartConnectionAsync(URL + legajo, legajo, 0).ConfigureAwait(false);
         }
 
+        // Se invoca cuando se presionan los botones de retroceso de hardware o software.
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            // Cancel current HTTP connection
+            CancelHttpTask();
+
+            e.Handled = true;
+            BackButton(null, null);
+        }
+
+        // Establece el Back Button e la plataforma de Escritorio.
+        private void SetBackButton()
+        {
+            string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
+
+            if (platformFamily.Equals("Windows.Mobile"))
+            {
+                BackButtonPC.Opacity = 0;
+            }
+        }
+
+        // Establece la dirección del servidor según la aplicación en ejecución.
         private string SetAppURLServer()
         {
             if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
@@ -67,159 +97,228 @@ namespace MisHorarios
         // Start Connection Async
         private async Task StartConnectionAsync(string URL, string legajo, int retry)
         {
-            // Show Message.
-            rootPage.NotifyUser("Consultando horarios...", NotifyType.StatusMessage);
-
-            // Cache control.
-            filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
-            filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
-            // Ignore SSL errors.
-            filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
-            filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
-            // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
-            // Default headers will be sent with every request sent from this HttpClient instance.
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
-
-            // Do an asynchronous GET in separate thread to not block the GUI while receiving the data from internet.
-            // and save it to a variable
-            try
+            if (retry == 0)
             {
-                HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask(cts.Token).ConfigureAwait(false);
-                responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
+                // Mostrar mensaje de consulta.
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Consultando horarios...", NotifyType.StatusMessage));
+
+                // Cache control.
+                filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+                filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+                // Ignore SSL errors.
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+                // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
+                // Default headers will be sent with every request sent from this HttpClient instance.
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
+
+                // Do an asynchronous GET in separate thread to not block the GUI while receiving the data from Internet.
+                // and save it to a variable
+                try
+                {
+                    // Obtener los datos del servidor y almacenarlos
+                    HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask(cts.Token).ConfigureAwait(false);
+                    responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
+
+                    // Try parse JSON
+                    TryParseJson(responseBodyAsText, false);
+
+                    // Guardar caché
+                    TrySaveCache(legajo);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Mostrar mensaje de conexión cancelada.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Conexión cancelada", NotifyType.DebugMessage));
+
+                    // Detener animación de carga.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
+
+                    // Start HorariosPage FadeOut animation
+                    HorariosPage_FadeOutWithBlackGrid();
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Excepción en GetAsync. Detalles:" + e, NotifyType.DebugMessage));
+#endif
+
+                    // Si no hay conexión a Internet disponible, reintentar la conexión una vez y mostrar un mensaje.
+                    await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
+                }
             }
-            catch (TaskCanceledException)
+            // Reintento 1
+            else
             {
-                rootPage.NotifyUser("Conexión cancelada", NotifyType.DebugMessage);
+                // Mostrar mensaje de reintento.
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet. Reintentando...", NotifyType.ErrorMessage));
+
+                // Cache control.
+                filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+                filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+                // Ignore SSL errors.
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+                // The following line sets a "User-Agent" request header as a default header on the HttpClient instance.
+                // Default headers will be sent with every request sent from this HttpClient instance.
+                httpClient.DefaultRequestHeaders.UserAgent.Add(new HttpProductInfoHeaderValue("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.19035", "18.19035"));
+
+                // Do an asynchronous GET in separate thread to not block the GUI while receiving the data from Internet.
+                // and save it to a variable
+                try
+                {
+                    // Obtener los datos del servidor y almacenarlos
+                    HttpResponseMessage response = await httpClient.GetAsync(new Uri(URL, UriKind.Absolute)).AsTask(cts.Token).ConfigureAwait(false);
+                    responseBodyAsText = await response.Content.ReadAsStringAsync().AsTask(cts.Token).ConfigureAwait(false);
+
+                    // Try parse JSON
+                    TryParseJson(responseBodyAsText, false);
+
+                    // Guardar caché
+                    TrySaveCache(legajo);
+                }
+                catch (TaskCanceledException)
+                {
+                    // Mostrar mensaje de conexión cancelada.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Conexión cancelada", NotifyType.DebugMessage));
+
+                    // Detener animación de carga.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
+
+                    // Start HorariosPage FadeOut animation
+                    HorariosPage_FadeOutWithBlackGrid();
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Excepción en GetAsync. Detalles:" + e, NotifyType.DebugMessage));
+#endif
+
+                    // Si en el reintento sigue sin haber conexión a Internet disponible, intentar leer los horarios en la caché y mostrar un mensaje.
+                    string cache = Utils.TryReadFile(localfolder, "horarios" + legajo + ".tmp");
+
+                    // Chequear si existe un archivo en caché que corresponda a los horarios que se quieren leer.
+                    if (!string.IsNullOrEmpty(cache))
+                    {
+                        TryParseJson(cache, true);
+                    }
+                    else
+                    {
+                        // Mostrar mensaje de sin conexión a Internet.
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage));
+
+                        // Detener animación de carga.
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
+
+                        // Start HorariosPage FadeOut animation
+                        HorariosPage_FadeOutWithBlackGrid();
+                    }
+                }
             }
-            catch (Exception)
-            {
-                // If no Internet connection is available, check if the last legajo obtained is equal to
-                // the actual legajo and read it from the cache and show a message.
+        }
 
-                //retry
-
-                // Show error message.
-                rootPage.NotifyUser("Error. No hay conexión a Internet.", NotifyType.ErrorMessage);
-
-                // Try to read from cache.
-                Read_cache(legajo, 0);
-            }
-
-            // Find ':[{' string to check if the data contains a valid legajo info
-            if (responseBodyAsText.Contains(":[{"))
+        // Try parse JSON
+        private async void TryParseJson(string data, bool IsFromCache)
+        {
+            // Chequear si el archivo en caché contiene datos válidos.
+            if (data.Contains(":[{"))
             {
                 try
                 {
                     // Parse JSON
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.DataContext = new AlseaJson(responseBodyAsText));
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.DataContext = new AlseaJson(data));
 
-                    // Show successful
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage));
+                    // Mostrar mensaje exitoso.
+                    if (IsFromCache) await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet. Los horarios pueden estar desactualizados!", NotifyType.ErrorMessage));
+                    else await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage));
+
+                    // Show ContentPanelInfo
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ContentPanelInfo.Visibility = Visibility.Visible);
+
+                    // Show list
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => List.Visibility = Visibility.Visible);
+
+
+                    // Detener animación de carga.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
                 }
-                catch (Exception ex1)
+                catch (Exception)
                 {
-                    //123123123
-                    // Database parsing error
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () => rootPage.NotifyUser(ex1.ToString(), NotifyType.ErrorMessage));
+                    // Mensaje de error de base de datos.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("La base de datos está dañada", NotifyType.ErrorMessage));
 
-                    if (retry == 0)
-                    {
-                        await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage);
+                    // Detener animación de carga.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
-                        // Try to read from cache
-                        Read_cache(legajo, 1);
-                    }
+                    // Start HorariosPage FadeOut animation
+                    HorariosPage_FadeOutWithBlackGrid();
                 }
-
-                // Save cache
-                //Save_cache(responseBodyAsText, legajo);
-
-                // Show ContentPanelInfo
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ContentPanelInfo.Visibility = Visibility.Visible);
-
-                // Show list
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => List.Visibility = Visibility.Visible);
-
-                // Stop ProgressRing
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => loading_ring.IsActive = false);
             }
             else
             {
-                // Legajo NOT FOUND error
-                rootPage.NotifyUser("Legajo inexistente o sin horarios asignados.", NotifyType.ErrorMessage);
+                // Mensaje de legajo inexistente o sin horarios asignados.
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("El legajo no existe o no tiene los horarios asignados.", NotifyType.ErrorMessage));
 
-                // Stop ProgressRing
-                loading_ring.IsActive = false;
-                GoPageBack(null, null);
+                // Detener animación de carga.
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
+
+                // Start HorariosPage FadeOut animation
+                HorariosPage_FadeOutWithBlackGrid();
             }
         }
 
-        // Function start_fade-in_animation
-        private void Start_FadeInAnimation()
+        // Guardar caché
+        private void TrySaveCache(string legajo)
         {
-            HorariosPage_FadeInAnimation.Begin();
+            // Guardar los últimos horarios leídos.
+            Utils.TryWriteFile(localfolder, "horariosLast.tmp", responseBodyAsText);
+
+            // Guardar una caché de todos los horarios leídos.
+            Utils.TryWriteFile(localfolder, "horarios" + legajo + ".tmp", responseBodyAsText);
         }
 
-        // Se invoca cuando se presionan los botones de retroceso de hardware o software.
-        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        // Start HorariosPage_FadeIn2 animation when HorariosPage_FadeIn is completed.
+        private void HorariosPage_FadeInCompleted(object sender, object e)
         {
-            // Cancel current HTTP connection
-            CancelHttpTask();
-
-            e.Handled = true;
-            BackButton(null, null);
+            HorariosPage_FadeIn2.Begin();
         }
 
-        // Set Back Button on Desktop devices
-        private void SetBackButton()
+        // Back Button Navigation from App_BackRequested()
+        private void BackButton(object sender, RoutedEventArgs e)
         {
-            string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
+            // Clear StatusBlock
+            rootPage.NotifyUser("", NotifyType.StatusMessage);
 
-            if (platformFamily.Equals("Windows.Mobile"))
-            {
-                BackButtonPC.Opacity = 0;
-            }
+            // Start HorariosPage FadeOut animation
+            HorariosPage_FadeOutWithBlackGrid();
         }
 
-        // Save last used legajo
-        private void Save_last_legajo(string legajo)
+        // Back Button Navigation from UI()
+        private void BackButton2(object sender, object e)
         {
-            // Save last used legajo to a file
-            var writer = new StreamWriter(File.OpenWrite(localfolder + "\\legajoLast.tmp"));
-            writer.WriteLine(legajo);
-            writer.Dispose();
+            // Clear StatusBlock
+            rootPage.NotifyUser("", NotifyType.StatusMessage);
+
+            // Start HorariosPage FadeOut animation
+            HorariosPage_FadeOutWithBlackGrid();
         }
 
-        public HorariosPage()
+        // Start HorariosPage FadeOut animation.
+        private void HorariosPage_FadeOutWithBlackGrid()
         {
-            InitializeComponent();
+            MainGridBlack.Opacity = 0;
+            HorariosPage_FadeOut.Begin();
         }
 
-        // Function start_fadeout_animation
-        private void Start_FadeOutAnimation()
+        // Start GoPageBack when HorariosPage_FadeOut animation is completed.
+        private void HorariosPage_FadeOutCompleted(object sender, object e)
         {
-            HorariosPage_FadeOutAnimation.Begin();
-        }
-
-        // Function start_fadeout_animation2
-        private void Start_FadeOutAnimation2()
-        {
-            HorariosPage_FadeOutAnimation2.Begin();
-        }
-
-        // On click 'Hyper-links'
-        private async void Footer_Click(object sender, EventArgs e)
-        {
-            //123123123
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+            // Go page back.
+            GoPageBack();
         }
 
         // Go back to MainPage with uncleared errors
-        private void GoPageBack(object sender, object e)
+        private void GoPageBack()
         {
             // Cancel current HTTP connection
             CancelHttpTask();
@@ -231,107 +330,6 @@ namespace MisHorarios
 
             // Go to page
             Frame.Navigate(typeof(WelcomePage));
-        }
-
-        // Navigation: Back Button
-        private void BackButton1(object sender, object e)
-        {
-            // Cancel current HTTP connection
-            CancelHttpTask();
-
-            // Clear List of Horarios
-            responseBodyAsText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
-
-            // Parse JSON
-            DataContext = new AlseaJson(responseBodyAsText);
-
-            // Clear StatusBlock
-            rootPage.NotifyUser("", NotifyType.StatusMessage);
-
-            // Go to page
-            Frame.Navigate(typeof(WelcomePage));
-        }
-
-        private void BackButton(object sender, RoutedEventArgs e)
-        {
-            // Cancel current HTTP connection
-            CancelHttpTask();
-
-            // Clear List of Horarios
-            responseBodyAsText = "{\"asignaciones\":[],\"fechaConsulta\":\"\",\"legajo\":\"\"}";
-
-            // Parse JSON
-            DataContext = new AlseaJson(responseBodyAsText);
-
-            // Clear StatusBlock
-            rootPage.NotifyUser("", NotifyType.StatusMessage);
-
-            // Go to page
-            Frame.Navigate(typeof(WelcomePage));
-        }
-
-        // Save cache to a file
-        private void Save_cache(string cache, string legajo)
-        {/*
-            // Save last readed horarios from last used legajo to a file
-            var writer = new StreamWriter(File.OpenWrite(localfolder + "\\horariosLast.tmp"));
-            writer.WriteLine(cache);
-            writer.Dispose();
-
-            // Cache horarios
-            var writer2 = new StreamWriter(File.OpenWrite(localfolder + "\\horariosLast" + legajo + ".tmp"));
-            writer.WriteLine(cache);
-            writer.Dispose();*/
-        }
-
-        // Read from cache
-        private void Read_cache(string legajo, int database_error)
-        {
-            try
-            {
-                var reader = new StreamReader(File.OpenRead(localfolder + "\\hoariosLast" + legajo + ".tmp"));
-                while (!reader.EndOfStream)
-                {
-                    // Put legajo into TextBox
-                    responseBodyAsText = reader.ReadLine();
-                }
-                reader.Dispose();
-            }
-            catch { }
-
-            // legajo item format
-            string query = "\"legajo\":\"" + legajo + "\"}";
-
-            // Check if legajo is valid and then parse JSon
-            if (responseBodyAsText.Contains(query))
-            {
-
-                // Parse JSON
-                DataContext = new AlseaJson(responseBodyAsText);
-
-                // Show ContentPanelInfo
-                ContentPanelInfo.Visibility = Visibility.Visible;
-
-                // Show ErrorMessage
-                if (database_error == 1)
-                {
-                    rootPage.NotifyUser("Sin conexión.\nMostrando los últimos horarios descargados", NotifyType.ErrorMessage);
-                }
-                else
-                {
-                    rootPage.NotifyUser("Sin conexión.\nMostrando los últimos horarios descargados", NotifyType.ErrorMessage);
-                }
-
-                // Show list
-                List.Visibility = Visibility.Visible;
-
-                // Stop ProgressRing
-                loading_ring.IsActive = false;
-            }
-            else
-            {
-                GoPageBack(null, null);
-            }
         }
 
         private void CancelHttpTask()
@@ -343,7 +341,7 @@ namespace MisHorarios
             cts = new CancellationTokenSource();
         }
 
-        public void Dispose()
+        public static void Dispose()
         {
             if (filter != null)
             {

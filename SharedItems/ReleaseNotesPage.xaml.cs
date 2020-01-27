@@ -74,7 +74,7 @@ namespace MisHorarios
                     Notes.Text = LoadResource.ReadReleaseNotes();
 
                     // Stop ProgressRing
-                    loading_ring.IsActive = false;
+                    ProgressRing_Animation2.IsActive = false;
                 });
             }
             catch (Exception ex)

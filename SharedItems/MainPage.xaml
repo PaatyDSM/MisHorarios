@@ -32,7 +32,7 @@
 		</Grid.RowDefinitions>
 
 		<!--  Aquí son cargadas todas las páginas del programa  -->
-		<Frame x:Name="Page_Frame" />
+		<Frame x:Name="Page_Frame"/>
 
 		<!--  Bloque para mensajes de estado y de error  -->
 		<Border x:Name="StatusBorder"
