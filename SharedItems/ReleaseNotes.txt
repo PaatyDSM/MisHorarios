@@ -13,8 +13,8 @@
 *Improved colors design.
 *Improved animations.
 *Fix design in HorariosPage.
-x Added Fluent effects.
-x Added support to ARM64.
+*Added UpdaterChecker.
+*A lot of bug-fixes.
 ------------------
 V1.47
 *Fixed crash in MainPage.

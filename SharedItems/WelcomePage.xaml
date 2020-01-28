@@ -6,7 +6,7 @@
 	<Page.Resources>
 		<!--  Storyboard resource: WelcomepPage FadeIn.  -->
 		<Storyboard x:Name="WelcomepPage_FadeInAnimation">
-			<DoubleAnimation Storyboard.TargetName="Page"
+			<DoubleAnimation Storyboard.TargetName="WelcomeGrid"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="0.0"
 			                 To="1.0"
@@ -19,7 +19,7 @@
 		<!--  Storyboard resource: WelcomepPage FadeOut.  -->
 		<Storyboard x:Name="WelcomepPage_to_HorariosPage_FadeOut">
 			<DoubleAnimation Completed="NavigatetoHorariosPage"
-			                 Storyboard.TargetName="Page"
+			                 Storyboard.TargetName="WelcomeGrid"
 			                 Storyboard.TargetProperty="Opacity"
 			                 From="1.0"
 			                 To="0.0"
@@ -31,188 +31,157 @@
 		</Storyboard>
 	</Page.Resources>
 
-	<!--  Page  -->
-	<Grid x:Name="Page"
-	      Loaded="Start_FadeInAnimation">
+	<!--  WelcomeGrid  -->
+	<Grid x:Name="WelcomeGrid"
+	      Loaded="Start_FadeInAnimation"
+	      Opacity="0">
 
 		<!--  BackgroundImage  -->
 		<Grid.Background>
-			<ImageBrush ImageSource="imgs/Welcome_background.png" Stretch="UniformToFill" />
+			<ImageBrush ImageSource="imgs/Welcome_background.png"
+			            Stretch="UniformToFill" />
 		</Grid.Background>
 
 		<!--  RowDefinitions  -->
 		<Grid.RowDefinitions>
-			<!--  ContentPanel  -->
+			<!--  ViewBox  -->
 			<RowDefinition Height="*" />
 			<!--  UpdatePanel  -->
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
-		<!--  ContentPanel  -->
-		<StackPanel x:Name="ContentPanel"
-		            Margin="0,18,0,0"
-		            VerticalAlignment="Center"
-		            Background="#99211200">
+		<!--  ViewBox  -->
+		<Viewbox MaxWidth="480">
+			<StackPanel Style="{StaticResource StackPanel_MAIN}">
 
-			<!--  Title  -->
-			<Viewbox x:Name="title_textblock" MaxWidth="360">
 				<TextBlock x:Name="APP_TITLE"
-				           Margin="24,8"
-				           HorizontalAlignment="Center"
-				           FontSize="22"
-				           FontWeight="Bold"
-				           Foreground="#FFB4F0C8"
-				           Text="Mis Horarios LLL" />
-			</Viewbox>
+				           Style="{StaticResource TextBlock_TITLE}" />
 
-			<!--  InfoText  -->
-			<TextBlock x:Name="InfoText"
-			           Margin="8"
-			           HorizontalAlignment="Center"
-			           VerticalAlignment="Center"
-			           FontSize="18"
-			           Foreground="#FFF5FAFF"
-			           Text="Ingresá tu número de legajo"
-			           TextAlignment="Center"
-			           TextWrapping="Wrap" />
+				<TextBlock Style="{StaticResource TextBlock_NORMALTEXT}"
+				           Text="Ingresá tu número de legajo" />
 
-			<!--  InputPanel  -->
-			<Grid x:Name="InputPanel"
-			      Margin="12"
-			      HorizontalAlignment="Center">
-				<!--  InputBlocks  -->
-				<Grid x:Name="InputBlocks"
-				      HorizontalAlignment="Center"
-				      VerticalAlignment="Center">
+				<Grid Style="{StaticResource Grid_InputBlock}">
 					<Grid.ColumnDefinitions>
-						<!--  textBlock  -->
 						<ColumnDefinition Width="Auto" />
-						<!--  InputField  -->
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 
-					<TextBlock x:Name="textBlock"
-					           Margin="0,0,6,0"
+					<TextBlock Style="{StaticResource TextBlock_NORMALTEXT}"
+					           Text="Legajo:" />
+
+					<Border Grid.Column="1"
+					        Style="{StaticResource Border_INPUT}">
+						<TextBox x:Name="main_legajo_input"
+						         Style="{StaticResource TextBox_INPUT}">
+							<TextBox.Resources>
+								<ResourceDictionary>
+									<ResourceDictionary.ThemeDictionaries>
+										<ResourceDictionary x:Key="Default">
+											<SolidColorBrush x:Key="TextControlBackgroundPointerOver"
+											                 Color="#11C2BBBB" />
+											<SolidColorBrush x:Key="TextControlForegroundPointerOver"
+											                 Color="LightGray" />
+											<SolidColorBrush x:Key="TextControlBackgroundFocused"
+											                 Color="#47FFFFFF" />
+											<SolidColorBrush x:Key="TextControlForegroundFocused"
+											                 Color="WhiteSmoke" />
+											<SolidColorBrush x:Key="TextControlSelectionHighlightColor"
+											                 Color="{StaticResource AppDefaultLight}" />
+										</ResourceDictionary>
+									</ResourceDictionary.ThemeDictionaries>
+								</ResourceDictionary>
+							</TextBox.Resources>
+						</TextBox>
+					</Border>
+				</Grid>
+
+				<!--  123123123  -->
+				<Grid Margin="24,18">
+					<Rectangle x:Name="Button_3D_Gradient"
+					           MinWidth="250"
+					           MinHeight="34"
+					           HorizontalAlignment="Center"
 					           VerticalAlignment="Center"
-					           FontSize="21"
-					           Foreground="#FFE6FFF6"
-					           Text="Legajo:"
-					           TextWrapping="Wrap" />
-					<!--  InputField  -->
-					<TextBox x:Name="main_legajo_input"
-					         Grid.Column="1"
-					         MinWidth="200"
-					         HorizontalAlignment="Left"
-					         Background="#90101010"
-					         BorderBrush="#FF1C4B4B"
-					         BorderThickness="1"
-					         FontSize="21"
-					         Foreground="WhiteSmoke"
-					         InputScope="Number"
-					         MaxLength="12"
-					         PlaceholderText=" Escribe tu legajo"
-					         TabIndex="1"
-					         Text=""
-					         TextAlignment="Center"
-					         TextWrapping="Wrap">
-						<TextBox.Resources>
+					           Opacity="1"
+					           RadiusX="6"
+					           RadiusY="6"
+					           RenderTransformOrigin="0.5,0.5"
+					           Stroke="Transparent">
+						<Rectangle.RenderTransform>
+							<CompositeTransform ScaleX="1.1"
+							                    ScaleY="1.2" />
+						</Rectangle.RenderTransform>
+						<Rectangle.Fill>
+							<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+								<GradientStop Offset="0" Color="{StaticResource AppDefaultLight}" />
+								<GradientStop Offset="1" Color="{StaticResource AppDefaultDark}" />
+							</LinearGradientBrush>
+						</Rectangle.Fill>
+					</Rectangle>
+					<Rectangle x:Name="Border"
+					           MinWidth="250"
+					           MinHeight="34"
+					           HorizontalAlignment="Center"
+					           VerticalAlignment="Center"
+					           Opacity="1"
+					           RadiusX="6"
+					           RadiusY="6"
+					           RenderTransformOrigin="0.5,0.5"
+					           Stroke="Black"
+					           StrokeThickness="2">
+						<Rectangle.RenderTransform>
+							<CompositeTransform ScaleX="1.1"
+							                    ScaleY="1.2" />
+						</Rectangle.RenderTransform>
+					</Rectangle>
+					<Button x:Name="send_legajo"
+					        MinWidth="250"
+					        HorizontalAlignment="Center"
+					        VerticalAlignment="Center"
+					        Background="Transparent"
+					        BorderThickness="1,1,2,2"
+					        Click="Verify_and_SendLegajo"
+					        Content="Consultar horarios"
+					        FontFamily="Segoe WP"
+					        FontSize="16"
+					        FontWeight="Bold"
+					        Foreground="LightGray"
+					        RenderTransformOrigin="0.5,0.5"
+					        TabIndex="2">
+						<Button.Resources>
 							<ResourceDictionary>
 								<ResourceDictionary.ThemeDictionaries>
-									<ResourceDictionary x:Key="Dark">
-										<SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#A0000000" />
-
-										<SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#FF1C5B4B" />
-										<SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#90202020" />
-										<SolidColorBrush x:Key="TextControlForegroundFocused" Color="WhiteSmoke" />
-										<SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#FF1F4F4F" />
-										<SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="Orange" />
+									<ResourceDictionary x:Key="Default">
+										<SolidColorBrush x:Key="ButtonForegroundPointerOver"
+										                 Color="White" />
+										<SolidColorBrush x:Key="ButtonBackgroundPointerOver"
+										                 Color="#19FFFFFF" />
+										<SolidColorBrush x:Key="ButtonBorderBrushPointerOver"
+										                 Color="#19FFFFFF" />
 									</ResourceDictionary>
 								</ResourceDictionary.ThemeDictionaries>
 							</ResourceDictionary>
-						</TextBox.Resources>
-					</TextBox>
+						</Button.Resources>
+						<Button.RenderTransform>
+							<CompositeTransform ScaleX="1.1"
+							                    ScaleY="1.2" />
+						</Button.RenderTransform>
+					</Button>
 				</Grid>
-			</Grid>
-
-			<!--  ButtonPanel  -->
-			<Grid x:Name="ButtonPanel" Margin="24">
-				<Rectangle x:Name="Button_3D_Gradient"
-				           MinWidth="256"
-				           MinHeight="34"
-				           HorizontalAlignment="Center"
-				           VerticalAlignment="Center"
-				           Opacity="1"
-				           RadiusX="6"
-				           RadiusY="6"
-				           RenderTransformOrigin="0.5,0.5"
-				           Stroke="Transparent">
-					<Rectangle.RenderTransform>
-						<CompositeTransform ScaleX="1.1" ScaleY="1.2" />
-					</Rectangle.RenderTransform>
-					<Rectangle.Fill>
-						<LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-							<GradientStop Offset="0" Color="#FF1B7342" />
-							<GradientStop Offset="1" Color="#FF184242" />
-						</LinearGradientBrush>
-					</Rectangle.Fill>
-				</Rectangle>
-				<Rectangle x:Name="Border"
-				           MinWidth="256"
-				           MinHeight="34"
-				           HorizontalAlignment="Center"
-				           VerticalAlignment="Center"
-				           Opacity="1"
-				           RadiusX="6"
-				           RadiusY="6"
-				           RenderTransformOrigin="0.5,0.5"
-				           Stroke="Black"
-				           StrokeThickness="2">
-					<Rectangle.RenderTransform>
-						<CompositeTransform ScaleX="1.1" ScaleY="1.2" />
-					</Rectangle.RenderTransform>
-				</Rectangle>
-				<Button x:Name="send_legajo"
-				        MinWidth="256"
-				        HorizontalAlignment="Center"
-				        VerticalAlignment="Center"
-				        Background="Transparent"
-				        BorderThickness="1,1,2,2"
-				        Click="Verify_and_SendLegajo"
-				        Content="Consultar horarios"
-				        FontFamily="Segoe WP"
-				        FontSize="16"
-				        FontWeight="Bold"
-				        Foreground="LightGray"
-				        RenderTransformOrigin="0.5,0.5"
-				        TabIndex="2">
-					<Button.Resources>
-						<ResourceDictionary>
-							<ResourceDictionary.ThemeDictionaries>
-								<ResourceDictionary x:Key="Dark">
-									<SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
-									<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="Transparent" />
-									<SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
-								</ResourceDictionary>
-							</ResourceDictionary.ThemeDictionaries>
-						</ResourceDictionary>
-					</Button.Resources>
-					<Button.RenderTransform>
-						<CompositeTransform ScaleX="1.1" ScaleY="1.2" />
-					</Button.RenderTransform>
-				</Button>
-			</Grid>
-		</StackPanel>
+			</StackPanel>
+		</Viewbox>
 
 		<!--  Animación de carga  -->
 		<ProgressRing x:Name="ProgressRing_Animation1"
-			              Width="150"
-			              Height="150"
-			              Foreground="#FF21804B"
-			              IsActive="True" />
+		              Width="150"
+		              Height="150"
+		              Foreground="{StaticResource AppDefaultLight}"
+		              IsActive="True" />
 
 		<!--  UpdatePanel  -->
 		<Grid x:Name="UpdatePanel"
 		      Grid.Row="1"
+		      MaxHeight="300"
 		      Background="#99211200"
 		      Visibility="Collapsed">
 			<TextBlock x:Name="UpdateText"
@@ -220,10 +189,8 @@
 			           HorizontalAlignment="Center"
 			           FontSize="18"
 			           Foreground="#FFF5FAFF"
-			           Text="Hay actualizaciones disponibles!"
 			           TextAlignment="Center"
 			           TextWrapping="Wrap" />
 		</Grid>
-
 	</Grid>
 </Page>

@@ -1,5 +1,7 @@
 ﻿using System;
 
+using PaatyDSM;
+
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Globalization;
@@ -31,15 +33,14 @@ namespace MisHorarios
         /// <param name="e">Información detallada acerca de la solicitud y el proceso de inicio.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-
             /* START:DEBUG SECTION */
-            #if DEBUG
+#if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Debug Options:
                 //this.DebugSettings.EnableFrameRateCounter = false;
             }
-            #endif
+#endif
             /* END:DEBUG SECTION */
 
             // No repetir la inicialización de la aplicación si la ventana tiene contenido todavía,
@@ -67,14 +68,27 @@ namespace MisHorarios
 
             if (rootFrame.Content == null)
             {
+                // Set resource dictionary
+                SetResourceDictionary();
+
                 // Cuando no se restaura la pila de navegación, navegar a la primera página,
                 // configurando la nueva página pasándole la información requerida como
-                //parámetro de navegación
+                // parámetro de navegación
                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
 
             // Asegurarse de que la ventana actual está activa.
             Window.Current.Activate();
+        }
+
+        private void SetResourceDictionary()
+        {
+            ResourceDictionary resourceDictionary = new ResourceDictionary();
+
+            if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
+                resourceDictionary.Source = new Uri("ms-appx:///Styles/SBXDictionary.xaml", UriKind.Absolute);
+            else resourceDictionary.Source = new Uri("ms-appx:///Styles/BKDictionary.xaml", UriKind.Absolute);
+            Current.Resources.MergedDictionaries.Add(resourceDictionary);
         }
 
         /// <summary>

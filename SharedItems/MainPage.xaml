@@ -32,7 +32,7 @@
 		</Grid.RowDefinitions>
 
 		<!--  Aquí son cargadas todas las páginas del programa  -->
-		<Frame x:Name="Page_Frame"/>
+		<Frame x:Name="Page_Frame" />
 
 		<!--  Bloque para mensajes de estado y de error  -->
 		<Border x:Name="StatusBorder"
@@ -93,7 +93,7 @@
 			                 Click="Footer_Click"
 			                 Content="PaatyDSM Apps"
 			                 FontFamily="Segoe Script"
-			                 FontSize="20"
+			                 FontSize="18"
 			                 Tag="http://paatydsmapps.000webhostapp.com/"
 			                 ToolTipService.ToolTip="Visitarme" />
 
@@ -113,5 +113,4 @@
 			        ToolTipService.ToolTip="Historial de cambios" />
 		</Grid>
 	</Grid>
-
 </Page>

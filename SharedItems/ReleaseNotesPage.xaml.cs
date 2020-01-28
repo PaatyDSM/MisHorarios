@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PaatyDSM;
+
 using Windows.ApplicationModel.Core;
 using Windows.System.Profile;
 using Windows.UI.Core;
@@ -71,7 +72,7 @@ namespace MisHorarios
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
                     // Load ReleaseNotes file
-                    Notes.Text = LoadResource.ReadReleaseNotes();
+                    Notes.Text = LoadResource.ReadReleaseNotes("MisHorarios", "ReleaseNotes.txt");
 
                     // Stop ProgressRing
                     ProgressRing_Animation2.IsActive = false;
@@ -81,9 +82,9 @@ namespace MisHorarios
             {
                 Notes.Text = "Error: Las notas de publicación no pudieron se leídas.";
 
-                #if DEBUG
+#if DEBUG
                 Notes.Text = "Error: Las notas de publicación no pudieron se leídas. Details:" + ex.ToString();
-                #endif
+#endif
             }
         }
     }

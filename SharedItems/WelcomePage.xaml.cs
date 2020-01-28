@@ -1,8 +1,13 @@
-﻿using PaatyDSM;
+﻿using System;
 
+using PaatyDSM;
+
+using Windows.Security.Cryptography.Certificates;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Http;
+using Windows.Web.Http.Filters;
 
 using static MisHorarios.MainPage;
 
@@ -12,6 +17,8 @@ namespace MisHorarios
     {
         // A pointer back to the main page. This is needed if you want to call methods in MainPage
         private readonly MainPage rootPage = Current;
+
+        private static string updateStringResponse = "";
 
         public WelcomePage()
         {
@@ -30,8 +37,8 @@ namespace MisHorarios
             // Clear status messages when BackButton is pressed.
             if (e.Content.ToString() == "BackButtonPressed") rootPage.NotifyUser("", NotifyType.StatusMessage);
 
-            // Set title and colors.
-            SetTitleAndColors();
+            // Set title.
+            SetTitle();
 
             //123123123
             footerPanel.Visibility = Visibility.Visible;
@@ -40,12 +47,45 @@ namespace MisHorarios
             main_legajo_input.Text = Utils.TryReadFile(localfolder, "legajoLast.tmp");
 
             // Check for updates
-            //CheckUpdates();
+            CheckUpdates();
 
             ProgressRing_Animation1.IsActive = false;
         }
 
-        public void SetTitleAndColors()
+        private async void CheckUpdates()
+        {
+            try
+            {
+                // Release old resources.
+                httpClient?.Dispose();
+                // Create new instance of thhtpClient.
+                filter = new HttpBaseProtocolFilter();
+                // Set httpClient filter.
+                httpClient = new HttpClient(filter);
+                // Cache control.
+                filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
+                filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
+                // Ignore SSL errors.
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.Untrusted);
+                filter.IgnorableServerCertificateErrors.Add(ChainValidationResult.InvalidName);
+                // Get response string from server.
+                HttpResponseMessage response = await httpClient.GetAsync(new Uri("https://paatydsmapps.000webhostapp.com/Apps/UWP/MisHorarios/updates.txt", UriKind.Absolute));
+                // Save response to string.
+                updateStringResponse = await response.Content.ReadAsStringAsync();
+            }
+            catch { }
+            if (!string.IsNullOrEmpty(updateStringResponse) && !updateStringResponse.Contains("<html>"))
+            {
+                UpdatePanel.Visibility = Visibility.Visible;
+                UpdateText.Text = updateStringResponse;
+            }
+            else
+            {
+                UpdatePanel.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public void SetTitle()
         {
             if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
             {

@@ -51,9 +51,6 @@ namespace MisHorarios
             // in order to call methods that are in this class.
             Current = this;
 
-            // Set global vars specific to the current running project.
-            //SampleTitle.Text = FEATURE_NAME;
-
             // This are static public properties that allows downstream pages to ge handle to the MainPage instance
             // in order to get the elements of the UI Xaml and set it's properties.
             main_Grid = Main_Grid;
@@ -68,8 +65,8 @@ namespace MisHorarios
 
             // Sets default windows size.
             ApplicationView view = ApplicationView.GetForCurrentView();
-            view.TryResizeView(new Size(360, 576));
-            view.SetPreferredMinSize(new Size(280, 420));
+            view.TryResizeView(new Size(350, 576));
+            view.SetPreferredMinSize(new Size(290, 420));
 
             // Set version number
             FP_VersionButton.Content = Utils.GetAppVersion();

@@ -17,24 +17,33 @@ namespace PaatyDSM
         /// <summary>
         /// Load the ReleaseNotes file.
         /// </summary>
-        public static string ReadReleaseNotes()
+        public static string ReadReleaseNotes(string DefaultNamespace, string folderDOTfilename)
         {
+            Stream stream = null;
+            Assembly assembly = typeof(LoadResource).GetTypeInfo().Assembly;
             try
             {
-                var assembly = typeof(LoadResource).GetTypeInfo().Assembly;
-                Stream stream = assembly.GetManifestResourceStream("MisHorarios.ReleaseNotes.txt");
-
-                string text = "";
-                using (var reader = new StreamReader(stream))
+                stream = assembly.GetManifestResourceStream(DefaultNamespace + "." + folderDOTfilename);
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    text = reader.ReadToEnd();
+                    string text = "";
+                    while (!reader.EndOfStream)
+                    {
+                        text = reader.ReadToEnd();
+                    }
+                    reader.Dispose();
+                    return text;
                 }
-                stream.Dispose();
-                return text;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch
             {
                 return "";
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+            finally
+            {
+                stream?.Dispose();
             }
         }
     }
@@ -134,7 +143,7 @@ namespace PaatyDSM
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
                     if (data != null)
-                        writer.WriteLine(data);
+                        writer.WriteAsync(data);
                     else writer.WriteLine("");
                 }
             }

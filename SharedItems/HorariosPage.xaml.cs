@@ -33,13 +33,16 @@ namespace MisHorarios
         // OnNavigatedTo function
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            // Set title.
+            SetTitle();
+
             HorariosPage_FadeIn.Begin();
 
             // Save legajo contained in NavigatinoEventArgs to a string.
             string legajo = e.Parameter.ToString();
 
             // Un-hide Back Button on Desktop devices.
-            SetBackButton();
+            await SetBackButtonAsync();
 
             // Se invoca cuando se presionan los botones de retroceso de hardware o software.
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
@@ -54,10 +57,22 @@ namespace MisHorarios
             string URL = SetAppURLServer();
 
             // Guardar el último legajo utilizado.
-            // TrySaveCache(legajo);
+            TrySaveCache(legajo);
 
             // Establecer la conexión al servidor y obtener los datos.
-            await StartConnectionAsync(URL + legajo, legajo, 0).ConfigureAwait(false);
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => StartConnectionAsync(URL + legajo, legajo, 0).ConfigureAwait(false));
+        }
+
+        public void SetTitle()
+        {
+            if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
+            {
+                APP_TITLE.Text = Utils.GetCurrentProjectName();
+            }
+            else
+            {
+                APP_TITLE.Text = Utils.GetCurrentProjectName();
+            }
         }
 
         // Se invoca cuando se presionan los botones de retroceso de hardware o software.
@@ -71,13 +86,13 @@ namespace MisHorarios
         }
 
         // Establece el Back Button e la plataforma de Escritorio.
-        private void SetBackButton()
+        private async Task SetBackButtonAsync()
         {
             string platformFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
 
             if (platformFamily.Equals("Windows.Mobile"))
             {
-                BackButtonPC.Opacity = 0;
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => BackButtonPC.Opacity = 0);
             }
         }
 
@@ -135,7 +150,7 @@ namespace MisHorarios
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
                     // Start HorariosPage FadeOut animation
-                    HorariosPage_FadeOutWithBlackGrid();
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
                 }
                 catch (Exception e)
                 {
@@ -144,7 +159,7 @@ namespace MisHorarios
 #endif
 
                     // Si no hay conexión a Internet disponible, reintentar la conexión una vez y mostrar un mensaje.
-                    await StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false);
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false));
                 }
             }
             // Reintento 1
@@ -186,7 +201,7 @@ namespace MisHorarios
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
                     // Start HorariosPage FadeOut animation
-                    HorariosPage_FadeOutWithBlackGrid();
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
                 }
                 catch (Exception e)
                 {
@@ -211,7 +226,7 @@ namespace MisHorarios
                         await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
                         // Start HorariosPage FadeOut animation
-                        HorariosPage_FadeOutWithBlackGrid();
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
                     }
                 }
             }
@@ -238,7 +253,6 @@ namespace MisHorarios
                     // Show list
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => List.Visibility = Visibility.Visible);
 
-
                     // Detener animación de carga.
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
                 }
@@ -251,7 +265,7 @@ namespace MisHorarios
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
                     // Start HorariosPage FadeOut animation
-                    HorariosPage_FadeOutWithBlackGrid();
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
                 }
             }
             else
@@ -263,7 +277,7 @@ namespace MisHorarios
                 await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
 
                 // Start HorariosPage FadeOut animation
-                HorariosPage_FadeOutWithBlackGrid();
+                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
             }
         }
 
@@ -277,20 +291,14 @@ namespace MisHorarios
             Utils.TryWriteFile(localfolder, "horarios" + legajo + ".tmp", responseBodyAsText);
         }
 
-        // Start HorariosPage_FadeIn2 animation when HorariosPage_FadeIn is completed.
-        private void HorariosPage_FadeInCompleted(object sender, object e)
-        {
-            HorariosPage_FadeIn2.Begin();
-        }
-
         // Back Button Navigation from App_BackRequested()
-        private void BackButton(object sender, RoutedEventArgs e)
+        private async void BackButton(object sender, RoutedEventArgs e)
         {
             // Clear StatusBlock
-            rootPage.NotifyUser("", NotifyType.StatusMessage);
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("", NotifyType.StatusMessage));
 
             // Start HorariosPage FadeOut animation
-            HorariosPage_FadeOutWithBlackGrid();
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => HorariosPage_FadeOut.Begin());
         }
 
         // Back Button Navigation from UI()
@@ -300,13 +308,6 @@ namespace MisHorarios
             rootPage.NotifyUser("", NotifyType.StatusMessage);
 
             // Start HorariosPage FadeOut animation
-            HorariosPage_FadeOutWithBlackGrid();
-        }
-
-        // Start HorariosPage FadeOut animation.
-        private void HorariosPage_FadeOutWithBlackGrid()
-        {
-            MainGridBlack.Opacity = 0;
             HorariosPage_FadeOut.Begin();
         }
 

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada a un ensamblado.
 [assembly: AssemblyTitle("Mis Horarios SBX")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Consultá tus horarios laborales ingresando tu legajo.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PaatyDSM Apps")]
 [assembly: AssemblyProduct("Mis Horarios")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © PaatyDSM Apps 2020")]
+[assembly: AssemblyTrademark("PaatyDSM Apps")]
 [assembly: AssemblyCulture("")]
 
 // La información de versión de un ensamblado consta de los cuatro valores siguientes:

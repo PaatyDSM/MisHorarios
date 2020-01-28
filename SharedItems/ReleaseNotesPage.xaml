@@ -32,10 +32,12 @@
 		</Storyboard>
 	</Page.Resources>
 
-	<Grid x:Name="ReleaseNotes_Grid" Opacity="0">
+	<Grid x:Name="ReleaseNotes_Grid"
+	      Opacity="0">
 		<!--  BackgroundImage  -->
 		<Grid.Background>
-			<ImageBrush ImageSource="imgs/Welcome_background.png" Stretch="UniformToFill" />
+			<ImageBrush ImageSource="imgs/Welcome_background.png"
+			            Stretch="UniformToFill" />
 		</Grid.Background>
 
 		<Grid.RowDefinitions>
@@ -119,15 +121,14 @@
 				         TextAlignment="Center"
 				         TextWrapping="Wrap" />
 			</ScrollViewer>
-
 		</Grid>
 
 		<!--  Animación de carga  -->
 		<ProgressRing x:Name="ProgressRing_Animation2"
-			              Width="150"
-			              Height="150"
-			              Foreground="#FF21804B"
-			              IsActive="True"
-						  Grid.Row="1"/>
+		              Grid.Row="1"
+		              Width="150"
+		              Height="150"
+		              Foreground="#FF21804B"
+		              IsActive="True" />
 	</Grid>
 </Page>
