@@ -122,7 +122,7 @@
 							<MenuFlyoutSeparator />
 							<MenuFlyoutItem HorizontalAlignment="Center"
 							                Click="MenuFlyout_Click"
-							                Tag="https://paatydsmapps.000webhostapp.com/"
+							                Tag="https://paatydsmapps.000webhostapp.com/Apps/UWP/MisHorarios/"
 							                Text="Política de privacidad" />
 						</StackPanel>
 					</Flyout>

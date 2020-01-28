@@ -154,9 +154,19 @@ namespace MisHorarios
         // On click 'MenuFlyout Items'
         private async void MenuFlyout_Click(object sender, object e)
         {
+            string privacyfile = "";
             progressRing_LaunchUriAsync.IsActive = true;
 
-            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(((MenuFlyoutItem)sender).Tag.ToString()));
+            if (Utils.GetCurrentProjectName() == "Mis Horarios SBX")
+            {
+                privacyfile = "SBX_privacy.html";
+            }
+            else
+            {
+                privacyfile = "BK_privacy.html";
+            }
+
+            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(((MenuFlyoutItem)sender).Tag.ToString() + privacyfile));
 
             if (success)
             {
