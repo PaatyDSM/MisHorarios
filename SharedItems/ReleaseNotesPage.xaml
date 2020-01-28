@@ -128,7 +128,7 @@
 		              Grid.Row="1"
 		              Width="150"
 		              Height="150"
-		              Foreground="#FF21804B"
+		              Foreground="{StaticResource AppDefaultLight}"
 		              IsActive="True" />
 	</Grid>
 </Page>

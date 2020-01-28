@@ -44,272 +44,276 @@
 					            Opacity="0.4"
 					            Stretch="UniformToFill" />
 				</Grid.Background>
-				<!--  RowDefinitions  -->
-				<Grid.RowDefinitions>
+				<Grid>
+					<!--  RowDefinitions  -->
+					<Grid.RowDefinitions>
+						<!--  Title  -->
+						<RowDefinition Height="Auto" />
+						<!--  PanelInfo  -->
+						<RowDefinition Height="Auto" />
+						<!--  ScrollList  -->
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<Button x:Name="BackButtonPC"
+					        HorizontalAlignment="Left"
+					        Click="BackButton2"
+					        Foreground="#FF0099FF"
+					        Opacity="1"
+					        Style="{StaticResource NavigationBackButtonNormalStyle}" />
 					<!--  Title  -->
-					<RowDefinition Height="Auto" />
-					<!--  PanelInfo  -->
-					<RowDefinition Height="Auto" />
-					<!--  ScrollList  -->
-					<RowDefinition Height="*" />
-				</Grid.RowDefinitions>
-
-				<Button x:Name="BackButtonPC"
-				        HorizontalAlignment="Left"
-				        Click="BackButton2"
-				        Foreground="#FF0099FF"
-				        Opacity="1"
-				        Style="{StaticResource NavigationBackButtonNormalStyle}" />
-				<!--  Title  -->
-				<Viewbox x:Name="Title"
-				         MaxWidth="380">
 					<TextBlock x:Name="APP_TITLE"
-					           Margin="24,4,24,0"
-					           HorizontalAlignment="Center"
-					           FontSize="22"
-					           FontWeight="Bold"
-					           Foreground="#FFB4F0C8" />
-				</Viewbox>
+					           Margin="33,4"
+					           Style="{StaticResource TextBlock_TITLE}" />
 
-				<!--  PanelInfo  -->
-				<Grid x:Name="ContentPanelInfo"
-				      Grid.Row="1"
-				      HorizontalAlignment="Stretch">
+					<!--  PanelInfo  -->
+					<Grid x:Name="ContentPanelInfo"
+					      Grid.Row="1"
+					      HorizontalAlignment="Center">
 
-					<!--  ColumnDefinitions  -->
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
+						<!--  ColumnDefinitions  -->
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
 
-					<!--  LegajoInfo  -->
-					<StackPanel x:Name="LegajoInfo"
-					            HorizontalAlignment="Center">
+						<!--  LegajoInfo  -->
+						<StackPanel x:Name="LegajoInfo"
+						            HorizontalAlignment="Center">
 
-						<!--  Legajo  -->
-						<TextBox Padding="0,8,0,0"
-						         HorizontalAlignment="Center"
-						         VerticalAlignment="Center"
-						         Background="{x:Null}"
-						         BorderBrush="{x:Null}"
-						         BorderThickness="0"
-						         FontSize="15"
-						         FontWeight="Bold"
-						         IsHitTestVisible="False"
-						         IsReadOnly="True"
-						         IsTabStop="False"
-						         Text="Nº de legajo"
-						         TextAlignment="Center" />
+							<!--  Legajo  -->
+							<TextBox Padding="0,8,0,0"
+							         HorizontalAlignment="Center"
+							         VerticalAlignment="Center"
+							         Background="{x:Null}"
+							         BorderBrush="{x:Null}"
+							         BorderThickness="0"
+							         FontSize="15"
+							         FontWeight="Bold"
+							         IsHitTestVisible="False"
+							         IsReadOnly="True"
+							         IsTabStop="False"
+							         Text="Nº de legajo"
+							         TextAlignment="Center" />
 
-						<TextBox HorizontalAlignment="Center"
-						         VerticalAlignment="Center"
-						         Background="{x:Null}"
-						         BorderBrush="{x:Null}"
-						         BorderThickness="0"
-						         FontSize="18"
-						         IsHitTestVisible="False"
-						         IsReadOnly="True"
-						         IsTabStop="False"
-						         Text="{Binding Path=Legajo, Mode=OneWay}"
-						         TextAlignment="Center" />
-					</StackPanel>
+							<TextBox HorizontalAlignment="Center"
+							         VerticalAlignment="Center"
+							         Background="{x:Null}"
+							         BorderBrush="{x:Null}"
+							         BorderThickness="0"
+							         FontSize="18"
+							         Foreground="LightGray"
+							         IsHitTestVisible="False"
+							         IsReadOnly="True"
+							         IsTabStop="False"
+							         Text="{Binding Path=Legajo, Mode=OneWay}"
+							         TextAlignment="Center" />
+						</StackPanel>
 
-					<!--  FechaConsultaInfo  -->
-					<StackPanel x:Name="FechaConsultaInfo"
-					            Grid.Column="1"
-					            HorizontalAlignment="Center">
-						<TextBox Padding="0,8,0,0"
-						         HorizontalAlignment="Center"
-						         VerticalAlignment="Center"
-						         Background="{x:Null}"
-						         BorderBrush="{x:Null}"
-						         BorderThickness="0"
-						         FontSize="15"
-						         FontWeight="Bold"
-						         IsHitTestVisible="False"
-						         IsReadOnly="True"
-						         IsTabStop="False"
-						         Text="Fecha de consulta"
-						         TextAlignment="Center" />
+						<!--  FechaConsultaInfo  -->
+						<StackPanel x:Name="FechaConsultaInfo"
+						            Grid.Column="1"
+						            HorizontalAlignment="Center">
+							<TextBox Padding="0,8,0,0"
+							         HorizontalAlignment="Center"
+							         VerticalAlignment="Center"
+							         Background="{x:Null}"
+							         BorderBrush="{x:Null}"
+							         BorderThickness="0"
+							         FontSize="15"
+							         FontWeight="Bold"
+							         IsHitTestVisible="False"
+							         IsReadOnly="True"
+							         IsTabStop="False"
+							         Text="Fecha de consulta"
+							         TextAlignment="Center" />
 
-						<TextBox HorizontalAlignment="Center"
-						         VerticalAlignment="Center"
-						         Background="{x:Null}"
-						         BorderBrush="{x:Null}"
-						         BorderThickness="0"
-						         FontSize="18"
-						         IsHitTestVisible="False"
-						         IsReadOnly="True"
-						         IsTabStop="False"
-						         Text="{Binding Path=FechaConsulta, Mode=OneWay}"
-						         TextAlignment="Center" />
-					</StackPanel>
+							<TextBox HorizontalAlignment="Center"
+							         VerticalAlignment="Center"
+							         Background="{x:Null}"
+							         BorderBrush="{x:Null}"
+							         BorderThickness="0"
+							         FontSize="18"
+							         Foreground="LightGray"
+							         IsHitTestVisible="False"
+							         IsReadOnly="True"
+							         IsTabStop="False"
+							         Text="{Binding Path=FechaConsulta, Mode=OneWay}"
+							         TextAlignment="Center" />
+						</StackPanel>
+					</Grid>
+
+					<!--  Scroll List  -->
+					<ScrollViewer x:Name="ScrollList"
+					              Grid.Row="2"
+					              Margin="8"
+					              HorizontalAlignment="Center"
+					              VerticalScrollBarVisibility="Hidden"
+					              VerticalScrollMode="Auto">
+
+						<!--  Asignaciones  -->
+						<ListView x:Name="Asignaciones"
+						          Background="{x:Null}"
+						          BorderBrush="{x:Null}"
+						          Foreground="WhiteSmoke"
+						          IsTabStop="False"
+						          ItemsSource="{Binding Path=Asignaciones, Mode=OneWay}"
+						          SelectionMode="None">
+							<!--  ItemTemplate  -->
+							<ListView.ItemTemplate>
+								<DataTemplate>
+									<Grid x:Name="NewInterfaceRoot"
+									      HorizontalAlignment="Center">
+										<!--  RowDefinitions  -->
+										<Grid.RowDefinitions>
+											<!--  FechaYHora  -->
+											<RowDefinition Height="Auto" />
+											<!--  Tienda  -->
+											<RowDefinition Height="Auto" />
+											<!--  Separator  -->
+											<RowDefinition Height="Auto" />
+										</Grid.RowDefinitions>
+
+										<!--  FechaYHora  -->
+										<Grid x:Name="FechaYHora"
+										      Width="270"
+										      MinWidth="200"
+										      VerticalAlignment="Center">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto" />
+												<ColumnDefinition Width="*" />
+											</Grid.ColumnDefinitions>
+											<Grid>
+												<TextBox HorizontalAlignment="Left"
+												         VerticalAlignment="Center"
+												         Background="{x:Null}"
+												         BorderBrush="{x:Null}"
+												         BorderThickness="0"
+												         FontSize="15"
+												         FontWeight="Bold"
+												         Foreground="DarkGray"
+												         IsHitTestVisible="False"
+												         IsReadOnly="True"
+												         IsTabStop="False"
+												         Text="{Binding Path=Fecha, Mode=OneWay}" />
+											</Grid>
+
+											<Grid Grid.Column="1"
+											      HorizontalAlignment="Right">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto" />
+													<ColumnDefinition Width="*" />
+													<ColumnDefinition Width="Auto" />
+												</Grid.ColumnDefinitions>
+												<Grid HorizontalAlignment="Right">
+													<TextBox HorizontalAlignment="Center"
+													         VerticalAlignment="Center"
+													         Background="{x:Null}"
+													         BorderBrush="{x:Null}"
+													         BorderThickness="0"
+													         FontSize="15"
+													         FontWeight="Bold"
+													         Foreground="#FF0099FF"
+													         IsHitTestVisible="False"
+													         IsReadOnly="True"
+													         IsTabStop="False"
+													         Text="{Binding Path=HoraEntrada, Mode=OneWay}" />
+												</Grid>
+												<Grid Grid.Column="1"
+												      Margin="-4"
+												      HorizontalAlignment="Right">
+													<TextBox Margin="-10"
+													         HorizontalAlignment="Center"
+													         VerticalAlignment="Center"
+													         Background="{x:Null}"
+													         BorderBrush="{x:Null}"
+													         BorderThickness="0"
+													         FontSize="15"
+													         Foreground="DarkGray"
+													         IsHitTestVisible="False"
+													         IsReadOnly="True"
+													         IsTabStop="False"
+													         Text="a:"
+													         TextAlignment="Center" />
+												</Grid>
+												<Grid Grid.Column="2"
+												      HorizontalAlignment="Right">
+													<TextBox Grid.Column="2"
+													         HorizontalAlignment="Center"
+													         VerticalAlignment="Center"
+													         Background="{x:Null}"
+													         BorderBrush="{x:Null}"
+													         BorderThickness="0"
+													         FontSize="15"
+													         FontWeight="Bold"
+													         Foreground="#FF0099FF"
+													         IsHitTestVisible="False"
+													         IsReadOnly="True"
+													         IsTabStop="False"
+													         Text="{Binding Path=HoraSalida, Mode=OneWay}" />
+												</Grid>
+											</Grid>
+										</Grid>
+
+										<!--  Tienda  -->
+										<Grid x:Name="Tienda"
+										      Grid.Row="1"
+										      Margin="0,-2,0,0"
+										      HorizontalAlignment="Center">
+											<!--  ColumnDefinitions  -->
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="Auto" />
+												<ColumnDefinition Width="Auto" />
+											</Grid.ColumnDefinitions>
+											<TextBox HorizontalAlignment="Center"
+											         VerticalAlignment="Center"
+											         Background="{x:Null}"
+											         BorderBrush="{x:Null}"
+											         BorderThickness="0"
+											         FontSize="15"
+											         Foreground="LightGray"
+											         IsHitTestVisible="False"
+											         IsReadOnly="True"
+											         IsTabStop="False"
+											         Text="en:"
+											         TextAlignment="Right" />
+											<TextBox Grid.Column="1"
+											         HorizontalAlignment="Left"
+											         VerticalAlignment="Center"
+											         Background="{x:Null}"
+											         BorderBrush="{x:Null}"
+											         BorderThickness="0"
+											         FontSize="15"
+											         FontWeight="Bold"
+											         Foreground="#FF0099FF"
+											         IsHitTestVisible="False"
+											         IsReadOnly="True"
+											         IsTabStop="False"
+											         Text="{Binding Path=Tienda, Mode=OneWay}" />
+										</Grid>
+										<!--  Separator  -->
+										<Rectangle x:Name="Separator"
+										           Grid.Row="2"
+										           Height="1"
+										           MaxWidth="220"
+										           Margin="0"
+										           VerticalAlignment="Bottom"
+										           Stroke="#FFB4F0C8" />
+									</Grid>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+					</ScrollViewer>
 				</Grid>
 
-				<!--  Scroll List  -->
-				<ScrollViewer x:Name="List"
+				<!--  Animación de carga  -->
+				<ProgressRing x:Name="ProgressRing_Animation3"
 				              Grid.Row="2"
-				              Margin="8"
-				              VerticalScrollBarVisibility="Hidden"
-				              VerticalScrollMode="Auto">
-
-					<!--  Asignaciones  -->
-					<ListView x:Name="Asignaciones"
-					          Background="{x:Null}"
-					          BorderBrush="{x:Null}"
-					          Foreground="WhiteSmoke"
-					          IsTabStop="False"
-					          ItemsSource="{Binding Path=Asignaciones, Mode=OneWay}"
-					          SelectionMode="None">
-
-						<!--  ItemTemplate  -->
-						<ListView.ItemTemplate>
-							<DataTemplate>
-								<Grid x:Name="NewInterfaceRoot">
-
-									<!--  RowDefinitions  -->
-									<Grid.RowDefinitions>
-										<!--  FechaYHora  -->
-										<RowDefinition Height="Auto" />
-										<!--  Tienda  -->
-										<RowDefinition Height="Auto" />
-										<!--  Separator  -->
-										<RowDefinition Height="Auto" />
-									</Grid.RowDefinitions>
-
-									<!--  FechaYHora  -->
-									<Grid x:Name="FechaYHora"
-									      HorizontalAlignment="Center"
-									      VerticalAlignment="Center">
-										<!--  ColumnDefinitions  -->
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition Width="*" />
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition Width="*" />
-											<ColumnDefinition Width="Auto" />
-										</Grid.ColumnDefinitions>
-
-										<TextBox HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="16"
-										         FontWeight="Bold"
-										         Foreground="DarkGray"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="{Binding Path=Fecha, Mode=OneWay}" />
-										<TextBox Grid.Column="1"
-										         HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="15"
-										         Foreground="DarkGray"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="de:"
-										         TextAlignment="Right" />
-										<TextBox Grid.Column="2"
-										         HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="16"
-										         FontWeight="Bold"
-										         Foreground="#FF0099FF"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="{Binding Path=HoraEntrada, Mode=OneWay}" />
-										<TextBox Grid.Column="3"
-										         HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="15"
-										         Foreground="DarkGray"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="a:"
-										         TextAlignment="Center" />
-										<TextBox Grid.Column="4"
-										         HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="16"
-										         FontWeight="Bold"
-										         Foreground="#FF0099FF"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="{Binding Path=HoraSalida, Mode=OneWay}" />
-									</Grid>
-
-									<!--  Tienda  -->
-									<Grid x:Name="Tienda"
-									      Grid.Row="1"
-									      HorizontalAlignment="Center">
-										<!--  ColumnDefinitions  -->
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="Auto" />
-											<ColumnDefinition Width="Auto" />
-										</Grid.ColumnDefinitions>
-										<TextBox HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="15"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="en:"
-										         TextAlignment="Right" />
-										<TextBox Grid.Column="1"
-										         HorizontalAlignment="Center"
-										         VerticalAlignment="Center"
-										         Background="{x:Null}"
-										         BorderBrush="{x:Null}"
-										         BorderThickness="0"
-										         FontSize="16"
-										         FontWeight="Bold"
-										         Foreground="#FF0099FF"
-										         IsHitTestVisible="False"
-										         IsReadOnly="True"
-										         IsTabStop="False"
-										         Text="{Binding Path=Tienda, Mode=OneWay}" />
-									</Grid>
-									<!--  Separator  -->
-									<Rectangle x:Name="Separator"
-									           Grid.Row="2"
-									           Height="1"
-									           Margin="0"
-									           VerticalAlignment="Bottom"
-									           Stroke="#FFB4F0C8" />
-								</Grid>
-							</DataTemplate>
-						</ListView.ItemTemplate>
-					</ListView>
-				</ScrollViewer>
+				              Width="150"
+				              Height="150"
+				              Foreground="{StaticResource AppDefaultLight}"
+				              IsActive="True" />
 			</Grid>
-			<!--  Animación de carga  -->
-			<ProgressRing x:Name="ProgressRing_Animation3"
-			              Grid.Row="2"
-			              Width="150"
-			              Height="150"
-			              Foreground="#FF21804B"
-			              IsActive="True" />
 		</Grid>
 	</Grid>
 </Page>

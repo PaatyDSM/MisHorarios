@@ -57,7 +57,7 @@ namespace MisHorarios
             string URL = SetAppURLServer();
 
             // Guardar el último legajo utilizado.
-            TrySaveCache(legajo);
+            TrySaveCache(legajo, false);
 
             // Establecer la conexión al servidor y obtener los datos.
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => StartConnectionAsync(URL + legajo, legajo, 0).ConfigureAwait(false));
@@ -139,7 +139,7 @@ namespace MisHorarios
                     TryParseJson(responseBodyAsText, false);
 
                     // Guardar caché
-                    TrySaveCache(legajo);
+                    TrySaveCache(legajo, true);
                 }
                 catch (TaskCanceledException)
                 {
@@ -157,6 +157,8 @@ namespace MisHorarios
 #if DEBUG
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Excepción en GetAsync. Detalles:" + e, NotifyType.DebugMessage));
 #endif
+                    // Mostrar mensaje de reintento.
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin Internet. Reintentando...", NotifyType.ErrorMessage));
 
                     // Si no hay conexión a Internet disponible, reintentar la conexión una vez y mostrar un mensaje.
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => StartConnectionAsync(URL, legajo, 1).ConfigureAwait(false));
@@ -165,9 +167,6 @@ namespace MisHorarios
             // Reintento 1
             else
             {
-                // Mostrar mensaje de reintento.
-                await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet. Reintentando...", NotifyType.ErrorMessage));
-
                 // Cache control.
                 filter.CacheControl.ReadBehavior = HttpCacheReadBehavior.MostRecent;
                 filter.CacheControl.WriteBehavior = HttpCacheWriteBehavior.NoCache;
@@ -190,7 +189,7 @@ namespace MisHorarios
                     TryParseJson(responseBodyAsText, false);
 
                     // Guardar caché
-                    TrySaveCache(legajo);
+                    TrySaveCache(legajo, true);
                 }
                 catch (TaskCanceledException)
                 {
@@ -219,8 +218,8 @@ namespace MisHorarios
                     }
                     else
                     {
-                        // Mostrar mensaje de sin conexión a Internet.
-                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet.", NotifyType.ErrorMessage));
+                        // Mostrar el mensaje: No hay conexión a Internet.
+                        await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("No hay conexión a Internet.", NotifyType.ErrorMessage));
 
                         // Detener animación de carga.
                         await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
@@ -244,14 +243,14 @@ namespace MisHorarios
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.DataContext = new AlseaJson(data));
 
                     // Mostrar mensaje exitoso.
-                    if (IsFromCache) await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin conexión a Internet. Los horarios pueden estar desactualizados!", NotifyType.ErrorMessage));
+                    if (IsFromCache) await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Sin Internet. Los horarios pueden estar desactualizados!", NotifyType.ErrorMessage));
                     else await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => rootPage.NotifyUser("Horarios leídos!", NotifyType.StatusMessage));
 
                     // Show ContentPanelInfo
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ContentPanelInfo.Visibility = Visibility.Visible);
 
                     // Show list
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => List.Visibility = Visibility.Visible);
+                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ScrollList.Visibility = Visibility.Visible);
 
                     // Detener animación de carga.
                     await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ProgressRing_Animation3.IsActive = false);
@@ -282,13 +281,15 @@ namespace MisHorarios
         }
 
         // Guardar caché
-        private void TrySaveCache(string legajo)
+        private void TrySaveCache(string legajo, bool cache)
         {
             // Guardar los últimos horarios leídos.
             Utils.TryWriteFile(localfolder, "horariosLast.tmp", responseBodyAsText);
-
-            // Guardar una caché de todos los horarios leídos.
-            Utils.TryWriteFile(localfolder, "horarios" + legajo + ".tmp", responseBodyAsText);
+            if (cache)
+            {
+                // Guardar una caché de todos los horarios leídos.
+                Utils.TryWriteFile(localfolder, "horarios" + legajo + ".tmp", responseBodyAsText);
+            }
         }
 
         // Back Button Navigation from App_BackRequested()

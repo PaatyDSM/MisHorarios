@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 
+using static MisHorarios.WelcomePage;
+
 namespace MisHorarios
 {
     public sealed partial class MainPage : Page
@@ -65,11 +67,19 @@ namespace MisHorarios
 
             // Sets default windows size.
             ApplicationView view = ApplicationView.GetForCurrentView();
-            view.TryResizeView(new Size(350, 576));
-            view.SetPreferredMinSize(new Size(290, 420));
+            view.TryResizeView(new Size(340, 576));
+            view.SetPreferredMinSize(new Size(300, 420));
 
             // Set version number
             FP_VersionButton.Content = Utils.GetAppVersion();
+
+            // Set FooterPanel visibility.
+            RestoreFooterPanelVisibility();
+        }
+
+        public static void RestoreFooterPanelVisibility()
+        {
+            footerPanel.Visibility = Visibility.Visible;
         }
 
         private void OnPageLoaded(object sender, object e)
@@ -96,7 +106,7 @@ namespace MisHorarios
                     break;
 
                 case NotifyType.DebugMessage:
-                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Yellow);
+                    StatusBorder.Background = new SolidColorBrush(Windows.UI.Colors.Goldenrod);
                     break;
             }
             StatusBlock.Text = strMessage;
@@ -141,11 +151,57 @@ namespace MisHorarios
             Page_Frame.Navigate(typeof(ReleaseNotesPage), null);
         }
 
-        // On click 'Hyper-links'
-        private async void Footer_Click(object sender, object e)
+        // On click 'MenuFlyout Items'
+        private async void MenuFlyout_Click(object sender, object e)
         {
-            //123123123
-            await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+            progressRing_LaunchUriAsync.IsActive = true;
+
+            var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(((MenuFlyoutItem)sender).Tag.ToString()));
+
+            if (success)
+            {
+                progressRing_LaunchUriAsync.IsActive = false;
+            }
+            else
+            {
+                progressRing_LaunchUriAsync.IsActive = false;
+                NotifyUser("No se pudo abrir el navegador!", NotifyType.ErrorMessage);
+            }
+        }
+
+        // On click 'Hyper-links'
+        private async void Hyperlink_Click(object sender, object e)
+        {
+            progressRing_LaunchUriAsync.IsActive = true;
+
+            if (new Uri(((HyperlinkButton)sender).Tag.ToString()).ToString().Contains("sendmail"))
+            {
+                try
+                {
+                    await Utils.SendMail("paaty.dsm@gmail.com", "PaatyDSM Apps-" + Utils.GetCurrentProjectName(), "Hola, de esta aplicación quiero reportar/comentar lo siguiente:");
+                }
+                catch
+                {
+                    progressRing_LaunchUriAsync.IsActive = false;
+                    //NotifyUser("No se pudo enviar el mail!", NotifyType.ErrorMessage);
+                }
+
+                progressRing_LaunchUriAsync.IsActive = false;
+            }
+            else
+            {
+                var success = await Windows.System.Launcher.LaunchUriAsync(new Uri(((HyperlinkButton)sender).Tag.ToString()));
+
+                if (success)
+                {
+                    progressRing_LaunchUriAsync.IsActive = false;
+                }
+                else
+                {
+                    progressRing_LaunchUriAsync.IsActive = false;
+                    NotifyUser("No se pudo abrir el navegador!", NotifyType.ErrorMessage);
+                }
+            }
         }
     }
 }

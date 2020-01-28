@@ -18,6 +18,9 @@ namespace MisHorarios
         // A pointer back to the main page. This is needed if you want to call methods in MainPage
         private readonly MainPage rootPage = Current;
 
+        // Referencia a progressRing
+        public static ProgressRing progressRing_LaunchUriAsync;
+
         private static string updateStringResponse = "";
 
         public WelcomePage()
@@ -37,18 +40,26 @@ namespace MisHorarios
             // Clear status messages when BackButton is pressed.
             if (e.Content.ToString() == "BackButtonPressed") rootPage.NotifyUser("", NotifyType.StatusMessage);
 
+            // This is a static public property that allows downstream pages to ge handle to this instance
+            // in order to get the elements of the UI Xaml and set it's properties.
+            progressRing_LaunchUriAsync = ProgressRing_Animation1;
+
+            // Restore FooterPanel Visibility
+            RestoreFooterPanelVisibility();
+
             // Set title.
             SetTitle();
-
-            //123123123
-            footerPanel.Visibility = Visibility.Visible;
 
             // Read last used legajo
             main_legajo_input.Text = Utils.TryReadFile(localfolder, "legajoLast.tmp");
 
             // Check for updates
             CheckUpdates();
+        }
 
+        // On Page loaded StopProgressRing
+        private void StopProgressRing(object sender, object e)
+        {
             ProgressRing_Animation1.IsActive = false;
         }
 

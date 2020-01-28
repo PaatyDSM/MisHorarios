@@ -15,6 +15,7 @@
 *Fix design in HorariosPage.
 *Added UpdaterChecker.
 *A lot of bug-fixes.
+*Added ARM64 Support (*Min 10.0.16299).
 ------------------
 V1.47
 *Fixed crash in MainPage.

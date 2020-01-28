@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Email;
 using Windows.System.Profile;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
@@ -157,6 +159,25 @@ namespace PaatyDSM
             {
                 stream?.Dispose();
             }
+        }
+
+        /// <summary>
+        /// About item that allows a user to send an e-mail to specified e-mail address
+        /// </summary>
+        public static async Task SendMail(string destine, string subject, string body)
+        {
+            if (destine == null) throw new ArgumentNullException(nameof(destine));
+            var regEx =
+                new Regex(
+                    "[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+                    RegexOptions.IgnoreCase);
+            if (!regEx.IsMatch(destine)) throw new ArgumentException("Not valid e-mail address");
+
+            var message = new EmailMessage();
+            message.To.Add(new EmailRecipient(destine));
+            message.Subject = subject;
+            message.Body = body;
+            await EmailManager.ShowComposeNewEmailAsync(message);
         }
 
         /// <summary>

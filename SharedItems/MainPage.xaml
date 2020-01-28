@@ -19,6 +19,18 @@
 				</DoubleAnimation.EasingFunction>
 			</DoubleAnimation>
 		</Storyboard>
+		<!--  Storyboard resource: FotterPanel FadeIn.  -->
+		<Storyboard x:Name="FooterPanelFadeInAnimation">
+			<DoubleAnimation Storyboard.TargetName="FooterPanelV4"
+			                 Storyboard.TargetProperty="Opacity"
+			                 From="0.0"
+			                 To="1.0"
+			                 Duration="0:0:0.4">
+				<DoubleAnimation.EasingFunction>
+					<QuinticEase />
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
+		</Storyboard>
 	</Page.Resources>
 
 	<Grid x:Name="Main_Grid">
@@ -44,6 +56,7 @@
 			           HorizontalAlignment="Center"
 			           FontWeight="Bold"
 			           Foreground="White"
+			           TextAlignment="Center"
 			           TextWrapping="Wrap" />
 		</Border>
 
@@ -65,6 +78,7 @@
 
 			<!--  Settings  -->
 			<Button x:Name="FP_SettingsButton"
+			        Margin="0,0,0,-2"
 			        HorizontalAlignment="Center"
 			        VerticalAlignment="Center"
 			        Background="Transparent"
@@ -75,31 +89,94 @@
 			        Foreground="Black"
 			        ToolTipService.ToolTip="Opciones">
 				<Button.Flyout>
-					<MenuFlyout>
-						<MenuFlyoutItem Click="Footer_Click"
-						                Tag="mailto:paaty.dsm@gmail.com?subject="
-						                Text="Reportar problema/sugerencia" />
-						<MenuFlyoutSeparator />
-						<MenuFlyoutItem Click="Footer_Click"
-						                Tag="http://paatydsmapps.000webhostapp.com/"
-						                Text="Política de privacidad" />
-					</MenuFlyout>
+					<Flyout>
+						<StackPanel>
+							<HyperlinkButton Click="Hyperlink_Click"
+							                 Content="Reportar problema/sugerencia"
+							                 Tag="sendmail" />
+							<TextBox HorizontalAlignment="Center"
+							         Background="Transparent"
+							         BorderThickness="0"
+							         IsReadOnly="True"
+							         Text="paaty.dsm@gmail.com"
+							         TextWrapping="NoWrap">
+								<TextBox.Resources>
+									<ResourceDictionary>
+										<ResourceDictionary.ThemeDictionaries>
+											<ResourceDictionary x:Key="Default">
+												<SolidColorBrush x:Key="TextControlBackgroundPointerOver"
+												                 Color="Transparent" />
+												<SolidColorBrush x:Key="TextControlForegroundPointerOver"
+												                 Color="Black" />
+												<SolidColorBrush x:Key="TextControlBackgroundFocused"
+												                 Color="Transparent" />
+												<SolidColorBrush x:Key="TextControlForegroundFocused"
+												                 Color="Black" />
+												<SolidColorBrush x:Key="TextControlSelectionHighlightColor"
+												                 Color="{StaticResource SystemAccentColor}" />
+											</ResourceDictionary>
+										</ResourceDictionary.ThemeDictionaries>
+									</ResourceDictionary>
+								</TextBox.Resources>
+							</TextBox>
+							<MenuFlyoutSeparator />
+							<MenuFlyoutItem HorizontalAlignment="Center"
+							                Click="MenuFlyout_Click"
+							                Tag="https://paatydsmapps.000webhostapp.com/"
+							                Text="Política de privacidad" />
+						</StackPanel>
+					</Flyout>
 				</Button.Flyout>
+				<Button.Resources>
+					<ResourceDictionary>
+						<ResourceDictionary.ThemeDictionaries>
+							<ResourceDictionary x:Key="Default">
+								<SolidColorBrush x:Key="ButtonForegroundPointerOver"
+								                 Color="Gray" />
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonBorderBrushPointerOver"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonForegroundPressed"
+								                 Color="LightGray" />
+								<SolidColorBrush x:Key="ButtonBackgroundPressed"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonBorderBrushPressed"
+								                 Color="Transparent" />
+							</ResourceDictionary>
+						</ResourceDictionary.ThemeDictionaries>
+					</ResourceDictionary>
+				</Button.Resources>
 			</Button>
 
 			<!--  Web-page  -->
 			<HyperlinkButton x:Name="FP_WebpageButton"
 			                 Grid.Column="1"
-			                 Click="Footer_Click"
+			                 Click="Hyperlink_Click"
 			                 Content="PaatyDSM Apps"
 			                 FontFamily="Segoe Script"
 			                 FontSize="18"
+			                 Foreground="{StaticResource SystemAccentColor}"
 			                 Tag="http://paatydsmapps.000webhostapp.com/"
-			                 ToolTipService.ToolTip="Visitarme" />
+			                 ToolTipService.ToolTip="Visitarme">
+				<HyperlinkButton.Resources>
+					<ResourceDictionary>
+						<ResourceDictionary.ThemeDictionaries>
+							<ResourceDictionary x:Key="Default">
+								<SolidColorBrush x:Key="HyperlinkButtonForegroundPointerOver"
+								                 Color="{StaticResource SystemAccentColorDark1}" />
+								<SolidColorBrush x:Key="HyperlinkButtonForegroundPressed"
+								                 Color="{StaticResource SystemAccentColorLight1}" />
+							</ResourceDictionary>
+						</ResourceDictionary.ThemeDictionaries>
+					</ResourceDictionary>
+				</HyperlinkButton.Resources>
+			</HyperlinkButton>
 
 			<!--  Version  -->
 			<Button x:Name="FP_VersionButton"
 			        Grid.Column="2"
+			        Margin="0,0,0,-1"
 			        HorizontalAlignment="Center"
 			        VerticalAlignment="Center"
 			        Background="Transparent"
@@ -110,7 +187,28 @@
 			        FontSize="14"
 			        Foreground="Black"
 			        TabIndex="4"
-			        ToolTipService.ToolTip="Historial de cambios" />
+			        ToolTipService.ToolTip="Historial de cambios">
+				<Button.Resources>
+					<ResourceDictionary>
+						<ResourceDictionary.ThemeDictionaries>
+							<ResourceDictionary x:Key="Default">
+								<SolidColorBrush x:Key="ButtonForegroundPointerOver"
+								                 Color="Gray" />
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonBorderBrushPointerOver"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonForegroundPressed"
+								                 Color="LightGray" />
+								<SolidColorBrush x:Key="ButtonBackgroundPressed"
+								                 Color="Transparent" />
+								<SolidColorBrush x:Key="ButtonBorderBrushPressed"
+								                 Color="Transparent" />
+							</ResourceDictionary>
+						</ResourceDictionary.ThemeDictionaries>
+					</ResourceDictionary>
+				</Button.Resources>
+			</Button>
 		</Grid>
 	</Grid>
 </Page>
