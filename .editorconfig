@@ -2,3 +2,9 @@
 
 # RCS1163: Unused parameter.
 dotnet_diagnostic.RCS1163.severity = none
+
+# CS0168: La variable está declarada pero nunca se usa
+dotnet_diagnostic.CS0168.severity = none
+
+# CA1031: Do not catch general exception types
+dotnet_diagnostic.CA1031.severity = none

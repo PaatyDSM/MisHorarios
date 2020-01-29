@@ -1,7 +1,7 @@
 ﻿V1.62
 *We merged BK and SBX solution in one.
 *Rewritten and improved all code.
-*Translated to C# .Net 4.5.1.
+*Translated to C# .
 *Fixed various bugs.
 *Updated FooterPanel to V4.
  - *Now in Settings we include a privacy link to pass Store certification.
