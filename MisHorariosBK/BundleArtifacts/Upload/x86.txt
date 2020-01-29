@@ -1,0 +1,1 @@
+MainPackage=C:\Projects\repos\MisHorarios\MisHorariosBK\bin\x86\Release\Upload\MisHorariosBK_1.62.5.0_x86.appx

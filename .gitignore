@@ -6,7 +6,7 @@
 # User-specific files
 *.rsuser
 *.suo
-*.user
+#*.user
 *.userosscache
 *.sln.docstates
 
@@ -206,8 +206,8 @@ rcf/
 
 # Windows Store app package directories and files
 AppPackages/
-BundleArtifacts/
-Package.StoreAssociation.xml
+#BundleArtifacts/
+#Package.StoreAssociation.xml
 _pkginfo.txt
 *.appx
 *.appxbundle
@@ -226,7 +226,7 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.jfm
-*.pfx
+#*.pfx
 *.publishsettings
 orleans.codegen.cs
 

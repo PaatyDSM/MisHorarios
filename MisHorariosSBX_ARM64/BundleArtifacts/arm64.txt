@@ -1,0 +1,4 @@
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosSBX_ARM64\bin\ARM64\Release\MisHorariosSBX_ARM64_1.62.5.0_scale-100.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosSBX_ARM64\bin\ARM64\Release\MisHorariosSBX_ARM64_1.62.5.0_scale-125.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosSBX_ARM64\bin\ARM64\Release\MisHorariosSBX_ARM64_1.62.5.0_scale-150.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosSBX_ARM64\bin\ARM64\Release\MisHorariosSBX_ARM64_1.62.5.0_scale-400.appx
