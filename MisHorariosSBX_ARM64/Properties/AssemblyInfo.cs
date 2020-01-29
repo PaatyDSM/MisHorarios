@@ -1,23 +1,22 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// La información general de un ensamblado se controla mediante el siguiente 
+// La información general de un ensamblado se controla mediante el siguiente
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada a un ensamblado.
-[assembly: AssemblyTitle("MisHorariosSBX_ARM64")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Mis Horarios SBX")]
+[assembly: AssemblyDescription("Consultá tus horarios laborales ingresando tu legajo.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MisHorariosSBX_ARM64")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("PaatyDSM Apps")]
+[assembly: AssemblyProduct("Mis Horarios")]
+[assembly: AssemblyCopyright("Copyright © PaatyDSM Apps 2020")]
+[assembly: AssemblyTrademark("PaatyDSM Apps")]
 [assembly: AssemblyCulture("")]
 
 // La información de versión de un ensamblado consta de los cuatro valores siguientes:
 //
 //      Versión principal
-//      Versión secundaria 
+//      Versión secundaria
 //      Número de compilación
 //      Revisión
 //

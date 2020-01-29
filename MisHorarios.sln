@@ -20,7 +20,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MisHorariosSBX_ARM64", "Mis
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedItems\SharedItems.projitems*{1724a238-4ae4-4572-a14c-cacb920f16c6}*SharedItemsImports = 4
 		SharedItems\SharedItems.projitems*{22b805cb-b10f-4981-81ec-89d206b7278b}*SharedItemsImports = 4
+		SharedItems\SharedItems.projitems*{498745fc-4f36-4db9-a1bd-46ac244d78a3}*SharedItemsImports = 4
 		SharedItems\SharedItems.projitems*{51fe8c7e-ded0-434c-941d-6a632b89d54f}*SharedItemsImports = 13
 		SharedItems\SharedItems.projitems*{aedc25f4-e508-48b0-9de0-1317eb03dbd8}*SharedItemsImports = 4
 	EndGlobalSection

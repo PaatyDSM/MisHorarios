@@ -6,7 +6,7 @@
     Las directivas de tiempo de ejecución están documentadas en https://go.microsoft.com/fwlink/?LinkID=391919
 
     Para habilitar totalmente la reflexión para App1.MyClass y todos sus miembros públicos o privados:
-    <Type Name="App1.MyClass" Dynamic="Required All"/>
+    <Type Name="App1.MyClass" Dynamic="Required All" />
 
     Para habilitar la creación dinámica de una instancia específica de AppClass<T> sobre System.Int32:
     <TypeInstantiation Name="App1.AppClass" Arguments="System.Int32" Activate="Required Public" />
@@ -22,10 +22,7 @@
       paquete de aplicación. Los asteriscos no son caracteres comodín.
     -->
     <Assembly Name="*Application*" Dynamic="Required All" />
-    
-    
+
     <!-- Agregue aquí las directivas de tiempo de ejecución específicas para su aplicación. -->
-
-
   </Application>
 </Directives>
