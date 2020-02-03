@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="3541PaatyDSM.MisHorariosBK" Publisher="CN=FA25A77B-B143-493A-B7E5-9B11FE4BB879" Version="1.62.6.0" />
-  <mp:PhoneIdentity PhoneProductId="dc4d1037-338e-4d69-b081-fe8917166127" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="3541PaatyDSM.MisHorariosBKARM64" Publisher="CN=FA25A77B-B143-493A-B7E5-9B11FE4BB879" Version="1.62.6.0" />
+  <mp:PhoneIdentity PhoneProductId="d2edc197-cad1-4eac-8a59-f183e1e4f937" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Mis Horarios BK</DisplayName>
+    <DisplayName>Mis Horarios BK (ARM64)</DisplayName>
     <PublisherDisplayName>PaatyDSM</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

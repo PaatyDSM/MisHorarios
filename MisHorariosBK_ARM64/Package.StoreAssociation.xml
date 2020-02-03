@@ -361,26 +361,20 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>3541PaatyDSM.MisHorariosBK</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.MisHorariosBKARM64</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>Mis Horarios BK</ReservedName>
+      <ReservedName>Mis Horarios BK (ARM64)</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
+    <MainPackageIdentityName>3541PaatyDSM.AgendaCeferino</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.AgendaEscolar</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.CrackCenter</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.MiRewards</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.MisasignacionesSBX</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.MisHorariosBK</MainPackageIdentityName>
     <MainPackageIdentityName>3541PaatyDSM.MisHorariosSBX</MainPackageIdentityName>
+    <MainPackageIdentityName>3541PaatyDSM.RadioFM10</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NP1996X9MZ9">
-    <BundleInfo>
-      <PackageInfo>
-        <OsMinVersion>10.0.16299.0</OsMinVersion>
-        <PackageArchitecture>Arm64</PackageArchitecture>
-        <PackageMaxArchitectureVersion>1.62.5.0</PackageMaxArchitectureVersion>
-      </PackageInfo>
-      <PackageInfo>
-        <OsMinVersion>10.0.16299.0</OsMinVersion>
-        <PackageArchitecture>Neutral</PackageArchitecture>
-        <PackageMaxArchitectureVersion>1.62.5.0</PackageMaxArchitectureVersion>
-      </PackageInfo>
-    </BundleInfo>
-  </PackageInfoList>
+  <PackageInfoList LandingUrl="https://developer.microsoft.com/dashboard/Application?appId=9NTVLVFV0JT9" />
 </StoreAssociation>
