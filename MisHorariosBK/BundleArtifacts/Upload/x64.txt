@@ -1,1 +1,1 @@
-MainPackage=C:\Projects\repos\MisHorarios\MisHorariosBK\bin\x64\Release\Upload\MisHorariosBK_1.62.5.0_x64.appx
+MainPackage=C:\Projects\repos\MisHorarios\MisHorariosBK\bin\x64\Release\Upload\MisHorariosBK_1.62.6.0_x64.appx

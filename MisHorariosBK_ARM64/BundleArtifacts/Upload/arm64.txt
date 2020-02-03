@@ -1,5 +1,5 @@
-MainPackage=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.5.0_ARM64.appx
-ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.5.0_scale-100.appx
-ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.5.0_scale-125.appx
-ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.5.0_scale-150.appx
-ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.5.0_scale-400.appx
+MainPackage=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.6.0_ARM64.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.6.0_scale-100.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.6.0_scale-125.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.6.0_scale-150.appx
+ResourcePack=C:\Projects\repos\MisHorarios\MisHorariosBK_ARM64\bin\ARM64\Release\Upload\MisHorariosBK_ARM64_1.62.6.0_scale-400.appx
