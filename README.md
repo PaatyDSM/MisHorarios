@@ -48,8 +48,9 @@ V1.62
     *Diseño de colores mejorado.
     *Animaciones mejoradas.
     *Se corrigió el diseño de 'HorariosPage'.
-    *Se ha agregado 'UpdaterChecker' para.
-    *
+    *Se ha agregado 'UpdaterChecker' para la comprobación de actualizaciones.
+    *Corrección de bugs.
+    *Corrección de íconos.
   
 #
 # Desarrollado por PaatyDSM Apps
