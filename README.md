@@ -39,7 +39,7 @@ V1.62
     *Todo el código ha sido reescrito y mejorado.
     *Se corrigieron varios errores.
     *'FooterPanel' actualizado a la version v4.
-        -Ahora en 'Configuración' se incluye un enlace de privacidad para aprobar la certificación de la Tienda.
+      -Ahora en 'Configuración' se incluye un enlace de privacidad para aprobar la certificación de la Tienda.
     *Se corrigieron errores tipográficos en las 'ReleaseNotes'.
     *Mejoras en la traducción.
     *Ahora la carga de las notas de versión no bloquea la GUI.
