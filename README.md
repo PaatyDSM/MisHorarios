@@ -1,4 +1,4 @@
-IMPORTANTE: Proyecto discontinuado
+ACTUALIZACIÓN: El proyecto está discontinuado, se ha movido y es mantenido en: https://github.com/PaatyDSM/MisHorarios_cspfm
 
 # Mis Horarios
 El proyecto actual es una conversión a C# y mejora del proyecto anterior:
