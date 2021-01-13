@@ -1,9 +1,9 @@
+IMPORTANTE: Proyecto discontinuado
+
 # Mis Horarios
-El proyecto actual es una unificación de dos proyectos anteriores y transladados a C#.
+El proyecto actual es una conversión a C# y mejora del proyecto anterior:
 
-https://github.com/PaatyDSM/HorariosBK_Cpp
-
-https://github.com/PaatyDSM/HorariosSBX_Cpp
+https://github.com/PaatyDSM/MisHorariosCpp_UWP
 #
 
 
